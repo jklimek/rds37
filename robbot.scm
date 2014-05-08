@@ -510,7 +510,7 @@
 (define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
 				   ,(load-image "robbot-art/crate.png") ; 1
 				   ,(load-image "robbot-art/Uwall.png") ; 2
-				   ,(load-image "robbot-art/crystal.png") ; 3
+				   ,(load-image "robbot-art/Lwall.png") ; 3
 				   ,(load-image "robbot-art/b5.png") ; 4
 				   ,(load-image "robbot-art/b9.png") ; 5
 				   ,(load-image "robbot-art/b7.png") ; 6
@@ -518,6 +518,7 @@
 				   ,(load-image "robbot-art/b3.png") ; 8
 				   ,(load-image "robbot-art/floor.png") ; floor
 				   ,(load-image "robbot-art/floor_dark.png") ; floor_dark
+
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
@@ -614,13 +615,8 @@
 						      ("a crate" 1)
 						      ("Hdoor" 5)
 						      ("a key" 7)
-
-				   
-
-
 						      ("Uwall" 2)
-						      ("Lwall" 10)
-
+						      ("Lwall" 3)
 						      ("a laser beam" 3)
 						      ("a laser gun" 3)
 						      ("a niderite sample" 4)
