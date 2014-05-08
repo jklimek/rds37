@@ -477,7 +477,7 @@
 #;(define *samples* (list->array 1 `(,(load-sound "pandora-art/click.wav")
 				   ,(load-sound "pandora-art/beep.wav"))))
 
-(set-window-title! "r o b b o t")
+(set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
 
 (define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
