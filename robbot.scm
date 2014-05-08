@@ -613,7 +613,7 @@
 				       ((match-lambda ("the hero" 0)
 						      ("an evil" 1)
 						      ("a crate" 1)
-						      ("Hdoor" 5)
+						      ("Hdoor" 6)
 						      ("a key" 7)
 						      ("Uwall" 2)
 						      ("Lwall" 3)
