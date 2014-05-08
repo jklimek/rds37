@@ -508,7 +508,8 @@
    ;miejsce na statusbar czy co
    (for-each
     (match-lambda ((x y sprite-index)
-		   (draw-image! (array-ref *sprites* sprite-index) x y)))
+		   (let ((sprite (array-ref *sprites* sprite-index)))
+		     (draw-image! sprite x y))))
     *display*)))
 
 (define *joystick* 0)
@@ -518,6 +519,12 @@
 (keydn 'right (lambda () (set! *joystick* 'E)))
 (keydn 'left  (lambda () (set! *joystick* 'W)))
 (keydn 'down  (lambda () (set! *joystick* 'S)))
+
+(keyup 'up    (lambda () (set! *joystick* 0)))
+(keyup 'down  (lambda () (set! *joystick* 0)))
+(keyup 'right (lambda () (set! *joystick* 0)))
+(keyup 'left  (lambda () (set! *joystick* 0)))
+(keyup 'space (lambda () (set! *joystick* 0)))
 
 (keydn 'esc quit)
 (keydn 'q quit)
@@ -744,8 +751,8 @@
 				     ("PRESS FIRE." 180 196))
 				   (T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
 
-		   (set! *joystick* 0)
-#;		   (if (eq? *general-game-state* 'PLAY)
+;		   (set! *joystick* 0)
+		   (if (eq? *general-game-state* 'PLAY)
 		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))		       
 		   ))
 
