@@ -8,6 +8,8 @@
 (use-modules (ice-9 match)) ;;; tylko dla gejzerka...
 
 
+(define *animation-on* #t)
+
 (define *general-game-state* 'PLAY) ;; TITLE HIGHSCORE MESSAGE ANIMATION GAMEOVER ...
 
 ;;; brudne komunikaty:
@@ -527,7 +529,7 @@
 (keyup 'down  (lambda () (set! *joystick* 0)))
 (keyup 'right (lambda () (set! *joystick* 0)))
 (keyup 'left  (lambda () (set! *joystick* 0)))
-(keyup 'space (lambda () (set! *joystick* 0)))
+;(keyup 'space (lambda () (set! *joystick* 0)))
 
 (keydn 'esc quit)
 (keydn 'q quit)
@@ -754,8 +756,8 @@
 				     ("PRESS FIRE." 180 196))
 				   (T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
 
-;		   (set! *joystick* 0)
-		   (if (eq? *general-game-state* 'PLAY)
+		   (if (eq? *joystick* 'A) (set! *joystick* 0))
+		   (if (and *animation-on* (eq? *general-game-state* 'PLAY))
 		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))		       
 		   ))
 
