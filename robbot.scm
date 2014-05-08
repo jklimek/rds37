@@ -480,13 +480,13 @@
 
 (define *sprites* (list->array 1 `(,(load-image "robbot-art/b1.png") ; 0
 				   ,(load-image "robbot-art/b2.png") ; 1
-				   ,(load-image "robbot-art/b3.png") ; 2
+				   ,(load-image "robbot-art/b00.png") ; 2
 				   ,(load-image "robbot-art/b4.png") ; 3
 				   ,(load-image "robbot-art/b5.png") ; 4
-				   ,(load-image "robbot-art/b6.png") ; 5
+				   ,(load-image "robbot-art/b9.png") ; 5
 				   ,(load-image "robbot-art/b7.png") ; 6
 				   ,(load-image "robbot-art/b8.png") ; 7
-				   ,(load-image "robbot-art/b9.png") ; 8
+				   ,(load-image "robbot-art/b3.png") ; 8
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
@@ -508,7 +508,10 @@
    ;miejsce na statusbar czy co
    (for-each
     (match-lambda ((x y sprite-index)
-		   (let ((sprite (array-ref *sprites* sprite-index)))
+		   (let* ((sprite (array-ref *sprites* sprite-index))
+			  (size (image-size sprite))
+			  (height (cadr size))
+			  (y (- y (- height 16))))
 		     (draw-image! sprite x y))))
     *display*)))
 
