@@ -504,17 +504,17 @@
 #;(define *samples* (list->array 1 `(,(load-sound "pandora-art/click.wav")
 				   ,(load-sound "pandora-art/beep.wav"))))
 
-(set-window-title! "r o b b o t")
+(set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
 
-(define *sprites* (list->array 1 `(,(load-image "robbot-art/b1.png") ; 0
-				   ,(load-image "robbot-art/b2.png") ; 1
-				   ,(load-image "robbot-art/b00.png") ; 2
-				   ,(load-image "robbot-art/b4.png") ; 3
+(define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
+				   ,(load-image "robbot-art/crate.png") ; 1
+				   ,(load-image "robbot-art/b01.png") ; 2
+				   ,(load-image "robbot-art/crystal.png") ; 3
 				   ,(load-image "robbot-art/b5.png") ; 4
 				   ,(load-image "robbot-art/b9.png") ; 5
 				   ,(load-image "robbot-art/b7.png") ; 6
-				   ,(load-image "robbot-art/b8.png") ; 7
+				   ,(load-image "robbot-art/key.png") ; 7
 				   ,(load-image "robbot-art/b3.png") ; 8
 				   )))
 
@@ -609,12 +609,12 @@
 					  (* tile-half-height (+ map-x map-y))))
 				      (sprite-index
 				       ((match-lambda ("the hero" 0)
-						      ("an evil" 3)
+						      ("an evil" 1)
 						      ("a crate" 1)
 						      ("a door" 5)
 						      ("a key" 7)
 						      ("a wall" 2)
-						      ("a laser beam" 1)
+						      ("a laser beam" 3)
 						      ("a laser gun" 3)
 						      ("a niderite sample" 4)
 						      (otherwise 6) ;?
