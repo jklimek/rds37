@@ -7,10 +7,9 @@
 
 (use-modules (ice-9 match)) ;;; tylko dla gejzerka...
 
+(define *animation-on* #f)
 
-(define *animation-on* #t)
-
-(define *general-game-state* 'PLAY) ;; TITLE HIGHSCORE MESSAGE ANIMATION GAMEOVER ...
+(define *general-game-state* 'PLAY) ;; TITLE HIGHSCORE MESSAGE ANIMATION GAMEOVER ...?
 
 ;;; brudne komunikaty:
 (define (mk-message msgs transform)  
@@ -19,6 +18,12 @@
 
 
 (define (to-int n) (inexact->exact (floor n)))
+
+;;; rotejtowanie listy (a1 a2 ... an-1 an) -> (a2 a3 ... an a1)
+(define (rot-list l)
+  (if (null? l)
+      l
+      (append (cdr l) (list (car l)))))
 
 ;;; alisty dla nasz
 (define (AL:new keys vals)
@@ -88,13 +93,17 @@
 ;;; ... i lecimy: -- swiat ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-accessors (W:sectors #;+jakis-config?))
 ;;; -- sektor ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-accessors (S:id S:objects #;+konfig-jakis?))
+(define-accessors (S:id S:objects S:floor-frames S:to-next-floor-frame  #;+konfig-jakis?))
 ;;;; -- obiekt ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-accessors (O:id
                    O:sector O:x O:y
                    O:dx O:dy
                    O:STATE O:name
                    O:step O:on-collision O:on-action))
+;;; -- "ramka podlogowa" ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define-accessors (F:length F:tiles))
+;;; -- kafel podlowogy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define-accessors (FT:x FT:y FT:shade))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; a tera ta: atomowe operacje na świecie T=[W->W]
@@ -115,7 +124,9 @@
 	`(,(map (lambda (sector)
 		  (if (eq? (S:id sector) sector-id)
 		      (list (S:id sector)
-			    (al-op object-id object (S:objects sector)))
+			    (al-op object-id object (S:objects sector))
+			    (S:floor-frames sector)
+			    (S:to-next-floor-frame sector))
 		      sector))
 		(W:sectors world)))))))
 ;;; ii-iv) update<o>, insert<o>, delete<o> : W->W dla o:-O,
@@ -449,10 +460,26 @@
 (define (std-step world)
   (let* ((hero (find 'HERO world))
 	 (sector-id (O:sector hero))
-	 (sector (car (AL:lookup sector-id (W:sectors world)))))
-;    (write `(std h= ,hero)) (newline)
-    (let loop ((pend sector)
-	       (world world))
+	 (sector (cons sector-id (AL:lookup sector-id (W:sectors world))))
+	 (objects (S:objects sector))
+	 (floors (S:floor-frames sector))
+	 (to-next (S:to-next-floor-frame sector))
+	 ;;; no i przeliczyć podłogi!
+	 (new-world `(,(map (lambda (sec)
+			      (if (eq? (S:id sec) sector-id)
+				  (let* ((floor-frames (S:floor-frames sec))
+					 (cur-frame (car floor-frames))
+					 (frame-length (F:length cur-frame)))
+				    (if (> to-next 0)
+					`(,sector-id ,objects ,floors ,(- to-next 1))
+					(let* ((new-floors (rot-list floor-frames))
+					       (new-cur-frame (car new-floors))
+					       (new-to-next (F:length new-cur-frame)))
+					  `(,sector-id ,objects ,new-floors ,new-to-next))))
+				  sec))
+			    (W:sectors world)))))
+    (let loop ((pend objects)
+	       (world new-world))
       (if (null? pend)
 	  world
 	  (loop (cdr pend)
@@ -540,14 +567,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (set-to-display! view)
-;(write view) (newline)
-  (let* ((tile-half-width 16)
+;  (write view) (newline)
+  (let* ((objects (car view))
+	 (floors (cdr view))
+	 (tile-half-width 16)
 	 (tile-half-height 8)
 	 (center-x 320)
 	 (top-y 0)
 	 (hero-visual-x 11.0)
 	 (hero-visual-y 11.0)
-	 (hero (cons 'HERO (AL:lookup 'HERO view)))
+	 (hero (cons 'HERO (AL:lookup 'HERO objects)))
 	 (hero-x (O:x hero))
 	 (hero-y (O:y hero))
 	 (diff-x (- hero-visual-x hero-x))
@@ -555,6 +584,20 @@
 ;(write `(,hero hx= ,hero-x hy= ,hero-y dx= ,diff-x dy= ,diff-y)) (newline)
     (set! *display*
 	  (append
+	   ;;; podlogi [swiatlo]:
+	   (map (match-lambda ((map-x map-y shade)
+			       (let* ((map-x (+ map-x diff-x)) ;; centrowanie na bohatera
+				      (map-y (+ map-y diff-y)) ;; 
+				      (disp-x
+				       (+ (- center-x tile-half-width)
+					  (* tile-half-width (- map-x map-y))))
+				      (disp-y
+				       (+ top-y
+					  (* tile-half-height (+ map-x map-y))))
+				      (sprite-index (+ shade 1))) ;; ?
+				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
+		floors)
+	   ;;; obiekty:
 	   (map (match-lambda ((id sector map-x map-y dx dy state name . _)
 			       (let* ((map-x (+ map-x diff-x)) ;; centrowanie na bohatera
 				      (map-y (+ map-y diff-y)) ;; 
@@ -577,18 +620,19 @@
 						      (otherwise 6) ;?
 						      ) name)))
 				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
-		(sort-current-view view))
+		(sort-objects-for-display objects))
 	   '()  ;; do rysowania dodatkowego krapu
 	   ))))
 
 
 (define (current-view world)
   (let* ((hero (find 'HERO world))
-	 (sector-id (O:sector hero)))
-    (car (AL:lookup sector-id (W:sectors world)))))
+	 (sector-id (O:sector hero))
+	 (sector (cons sector-id (AL:lookup sector-id (W:sectors world)))))
+    (cons (S:objects sector) (cadar (S:floor-frames sector)))))
 
 
-(define (sort-current-view visibles-list)
+(define (sort-objects-for-display visibles-list)
   (let ((dist-from-origin ;; sq.rt. is monotone anyway, and for some reason the observer stands at (66,66).
 	 (match-lambda ((id sector x y . _)
 			(+ (* (- 66.0 x) (- 66.0 x))
@@ -737,6 +781,15 @@
 
     (LASER1 0 15 14 -1 0 ( ,(cons 'TIME 0) ) "a laser gun" ,laser-step ,id-collision ,(lambda (me it world) ((T:delete<o> me) world)))
      )
+	;;; tera podlogowe
+	;;; sekw. podlogowa:
+	(
+	 (3 ((2 2 2) (2 3 2) (3 2 2) (3 3 1)))
+	 (2 ((2 2 1) (2 3 1) (3 2 1) (4 4 2)))
+	)
+	;;; (ile do nastepnego)
+	1
+
      ))))
 
 ;(car (AL:lookup 0 (W:sectors *state*)))
@@ -757,8 +810,9 @@
 				   (T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
 
 		   (if (eq? *joystick* 'A) (set! *joystick* 0))
+
 		   (if (and *animation-on* (eq? *general-game-state* 'PLAY))
-		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))		       
+		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))
 		   ))
 
 		(('MESSAGE msgs transform)
@@ -776,11 +830,13 @@
 		   (if (> step max-steps)
 		       (begin
 			 (set! *general-game-state* 'PLAY)
-			 '23)
+			 23)
 		       (let* ((hero (find 'HERO old))
 			      (sector-id (O:sector hero))
-			      (objects (car (AL:lookup sector-id (W:sectors old))))
-			      (new-view 
+			      (objects (S:objects (cons sector-id (AL:lookup sector-id (W:sectors old)))))
+			      (floors (S:floor-frames (cons sector-id (AL:lookup sector-id (W:sectors old)))))
+			      (new-floors floors) ;; tu bedzie anonimowanie podlog!!! TODO
+			      (new-objects
 			       (let loop ((objects objects))
 ; (write `(animate loop ,(length objects))) (newline)
 				 (if (null? objects)
@@ -807,7 +863,7 @@
 			       ;;; znikanie? na razie nic...
 					   (cons obj-before
 						 (loop objects))))))))
-			 (set-to-display! new-view)
+			 (set-to-display! (cons new-objects new-floors))
 			 (set! *general-game-state* `(ANIMATE ,old ,new ,(+ step 1)))
 			 )))))))
 
