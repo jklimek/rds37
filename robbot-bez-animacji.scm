@@ -489,7 +489,7 @@
 				   ,(load-image "robbot-art/b9.png") ; 8
 				   )))
 
-(define *font* (load-font "art/VeraMono.ttf" 11))
+(define *font* (load-font "robbot-art/VeraMono.ttf" 11))
 
 (define *display* '()) ;; !!
 
