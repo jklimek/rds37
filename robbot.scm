@@ -653,8 +653,8 @@
 (define *state* 
   `(((0 (
      (HERO 0 11 18 0 0 (,(cons 'NIDERITE 0)) "the hero" ,hero-step ,id-collision ,hero-action)
+
      ;;upper left wall
-     (Uwall1:1 0 1 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall1:2 0 1 2 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall1:3 0 1 3 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall1:4 0 1 4 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -675,7 +675,6 @@
      (Uwall1:19 0 1 19 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall1:20 0 1 20 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      ;;lower right wall
-     (Lwall20:1 0 20 1 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:2 0 20 2 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:3 0 20 3 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:4 0 20 4 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
@@ -694,7 +693,6 @@
      (Lwall20:17 0 20 17 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:18 0 20 18 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:19 0 20 19 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-     (Lwall20:20 0 20 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      ;;upper right wall
      (Uwall1:1 0 1 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall2:1 0 2 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -704,10 +702,6 @@
      (Uwall6:1 0 6 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall7:1 0 7 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall8:1 0 8 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
-     (Hdoor9:1 0 9 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
-     (Hdoor10:1 0 10 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
-     (Hdoor11:1 0 11 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
-     (Hdoor12:1 0 12 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
      (Uwall13:1 0 13 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall14:1 0 14 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall15:1 0 15 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -717,7 +711,6 @@
      (Uwall19:1 0 19 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      (Uwall20:1 0 20 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
      ;;lower left wall
-     (Lwall1:20 0 1 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall2:20 0 2 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall3:20 0 3 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall4:20 0 4 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
@@ -726,8 +719,6 @@
      (Lwall7:20 0 7 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall8:20 0 8 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall9:20 0 9 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-     (Hdoor10:20 0 10 20 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
-     (Hdoor11:20 0 11 20 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
      (Lwall12:20 0 12 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall13:20 0 13 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall14:20 0 14 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
@@ -737,6 +728,15 @@
      (Lwall18:20 0 18 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall19:20 0 19 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
      (Lwall20:20 0 20 20 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+     ;;boss door
+     (Hdoor9:1 0 9 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+     (Hdoor10:1 0 10 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+     (Hdoor11:1 0 11 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+     (Hdoor12:1 0 12 1 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+     ;;front door
+     (Hdoor10:20 0 10 20 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+     (Hdoor11:20 0 11 20 0 0 () "Hdoor" ,id-step ,id-collision ,id-action)
+
      )
 	;;; tera podlogowe
 	;;; sekw. podlogowa:

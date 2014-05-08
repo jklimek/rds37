@@ -7,42 +7,40 @@ build_foyer();
 
 
 function build_foyer() {
-    $map = '';
+    $map_ = [];
     
-    add_lisp_comment('upper left wall', $map);
+    add_map_comment($map_, 'upper left wall');
     for ($i = 1; $i<=20; $i++) {
-        add_map_line($map, "1 $i", 'Uwall');
+        add_map_element($map_, "1 $i", 'Uwall');
     }
     
-    add_lisp_comment('lower right wall', $map);
-    for ($i = 1; $i<=20; $i++) {
-        add_map_line($map, "20 $i", 'Lwall');
+    add_map_comment($map_, 'lower right wall');
+    for ($i = 2; $i<=20; $i++) {
+        add_map_element($map_, "20 $i", 'Lwall');
     }
     
-    add_lisp_comment('upper right wall', $map);
+    add_map_comment($map_, 'upper right wall');
     for ($i = 1; $i<=20; $i++) {
-        if ($i <= 12 & $i >= 9) {
-            add_map_line($map, "$i 1", 'Hdoor');
-        }
-        else{
-            add_map_line($map, "$i 1", 'Uwall');
-        }
+        add_map_element($map_, "$i 1", 'Uwall');
     }
     
-    add_lisp_comment('lower left wall', $map);
-    for ($i = 1; $i<=20; $i++) {
-        if ($i <= 11 & $i >= 10) {
-            add_map_line($map, "$i 20", 'Hdoor');
-        }
-        else{
-            add_map_line($map, "$i 20", 'Lwall');
-        }
+    add_map_comment($map_, 'lower left wall');
+    for ($i = 2; $i<=20; $i++) {
+        add_map_element($map_, "$i 20", 'Lwall');
     }
     
+    add_map_comment($map_, 'boss door');
+    for ($i=9; $i<=12; $i++) {
+        add_map_element($map_, "$i 1", 'Hdoor');
+    }
     
-    save_to_file('foyer', $map);
+    add_map_comment($map_, 'front door');
+    for ($i=10; $i<=11; $i++) {
+        add_map_element($map_, "$i 20", 'Hdoor');
+    }
+        
+    save_to_file('foyer', implode("\n", $map_));
 }
-
 
 function save_to_file($name, $content) {
     $file = fopen(MAP_DIR.$name, 'w+');
@@ -50,31 +48,18 @@ function save_to_file($name, $content) {
     fclose($file);
 }
 
-function add_lisp_comment($comment, &$subject) {
+function add_map_comment(&$map_, $comment) {
     echo(';;'.$comment.NL);
-    $subject .= INDENT.';;'.$comment."\n";
+    $map_[] = INDENT.';;'.$comment;
 }
 
-function add_map_line(&$map, $coordinates, $object_type) {
+function add_map_element(&$map_, $coordinates, $object_type) {
     echo($coordinates.NL);
-    $map .= preg_replace(
+    unset($map_[$coordinates]);
+    $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
         INDENT.'('.$object_type.'\1:\2 0 \1 \2 0 0 () "'.$object_type
-            .'" ,id-step ,id-collision ,id-action)'."\n",
+            .'" ,id-step ,id-collision ,id-action)',
         $coordinates
     );
-}
-
-function add_line_loud(&$string, $line) {
-    echo $line.NL;
-    $string .= $line."\n";
-}
-function lisp_map_line($numbers_list, $object_name) {
-    $lines_ = explode("\n", $numbers_list);
-    $lisp_list = preg_replace(
-        '#([0-9]+) ([0-9]+)#',
-        INDENT.'(WALL\1:\2 0 \1 \2 0 0 () "'.$object_name.'" ,id-step ,id-collision ,id-action)',
-        $numbers_list
-    );
-    return $lisp_list;
 }
