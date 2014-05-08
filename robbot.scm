@@ -509,13 +509,15 @@
 
 (define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
 				   ,(load-image "robbot-art/crate.png") ; 1
-				   ,(load-image "robbot-art/b01.png") ; 2
+				   ,(load-image "robbot-art/Uwall.png") ; 2
 				   ,(load-image "robbot-art/crystal.png") ; 3
 				   ,(load-image "robbot-art/b5.png") ; 4
 				   ,(load-image "robbot-art/b9.png") ; 5
 				   ,(load-image "robbot-art/b7.png") ; 6
 				   ,(load-image "robbot-art/key.png") ; 7
 				   ,(load-image "robbot-art/b3.png") ; 8
+				   ,(load-image "robbot-art/floor.png") ; floor
+				   ,(load-image "robbot-art/floor_dark.png") ; floor_dark
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
@@ -612,8 +614,13 @@
 						      ("a crate" 1)
 						      ("Hdoor" 5)
 						      ("a key" 7)
-						      ("Lwall" 2)
+
+				   
+
+
 						      ("Uwall" 2)
+						      ("Lwall" 10)
+
 						      ("a laser beam" 3)
 						      ("a laser gun" 3)
 						      ("a niderite sample" 4)
@@ -738,8 +745,7 @@
 	;;; tera podlogowe
 	;;; sekw. podlogowa:
 	(
-	 (3 ((2 2 2) (2 3 2) (3 2 2) (3 3 1)))
-	 (2 ((2 2 1) (2 3 1) (3 2 1) (4 4 2)))
+	 (3 ((2 2 9) (2 3 9) (3 2 9) (3 3 9) (4 4 9)))
 	)
 	;;; (ile do nastepnego)
 	1
