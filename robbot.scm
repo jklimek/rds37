@@ -103,7 +103,7 @@
 ;;; -- "ramka podlogowa" ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-accessors (F:length F:tiles))
 ;;; -- kafel podlowogy ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-accessors (FT:x FT:y FT:shade))
+(define-accessors (FT:x FT:y FT:sprite))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; a tera ta: atomowe operacje na świecie T=[W->W]
@@ -585,7 +585,7 @@
     (set! *display*
 	  (append
 	   ;;; podlogi [swiatlo]:
-	   (map (match-lambda ((map-x map-y shade)
+	   (map (match-lambda ((map-x map-y sprite-index)
 			       (let* ((map-x (+ map-x diff-x)) ;; centrowanie na bohatera
 				      (map-y (+ map-y diff-y)) ;; 
 				      (disp-x
@@ -593,8 +593,7 @@
 					  (* tile-half-width (- map-x map-y))))
 				      (disp-y
 				       (+ top-y
-					  (* tile-half-height (+ map-x map-y))))
-				      (sprite-index (+ shade 1))) ;; ?
+					  (* tile-half-height (+ map-x map-y)))))
 				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
 		floors)
 	   ;;; obiekty:
@@ -789,7 +788,7 @@
 		       (let* ((hero (find 'HERO old))
 			      (sector-id (O:sector hero))
 			      (objects (S:objects (cons sector-id (AL:lookup sector-id (W:sectors old)))))
-			      (floors (S:floor-frames (cons sector-id (AL:lookup sector-id (W:sectors old)))))
+			      (floors (cadar (S:floor-frames (cons sector-id (AL:lookup sector-id (W:sectors old))))))
 			      (new-floors floors) ;; tu bedzie anonimowanie podlog!!! TODO
 			      (new-objects
 			       (let loop ((objects objects))
