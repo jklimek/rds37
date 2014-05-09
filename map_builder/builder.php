@@ -60,7 +60,7 @@ function build_hallway_floor() {
     
     for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
         for ($j = 2; $j<=HALLWAY_LENTGH-1; $j++) {
-            add_floor_element($map_, "$i $j", "9");
+            add_floor_element($map_, "$i $j", eval_floor_tile_version($i, $j));
         }
     }
     $map_[] = "\n".INDENT.")))\n";
@@ -87,13 +87,17 @@ function build_foyer_floor() {
     
     for ($i = 2; $i<=FOYER_WIDTH-1; $i++) {
         for ($j = 2; $j<=FOYER_LENTGH-1; $j++) {
-            add_floor_element($map_, "$i $j", "9");
+            add_floor_element($map_, "$i $j", eval_floor_tile_version($i, $j));
         }
     }
     $map_[] = "\n".INDENT.")))\n";
     
     $map = implode(" ", $map_);
     return $map;
+}
+
+function eval_floor_tile_version($i, $j) {
+    return (($i+$j)%2)? 11: 12;
 }
 
 function build_foyer_constructions() {

@@ -518,7 +518,8 @@
 				   ,(load-image "robbot-art/b3.png") ; 8
 				   ,(load-image "robbot-art/floor.png") ; 9 floor
 				   ,(load-image "robbot-art/floor_dark.png") ; 10 floor_dark
-
+				   ,(load-image "robbot-art/floor_a.png") ; 11
+				   ,(load-image "robbot-art/floor_b.png") ; 12
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
