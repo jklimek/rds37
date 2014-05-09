@@ -1,6 +1,6 @@
 <?php
 define ('NL', '<br />');
-define ('MAP_DIR', 'maps/');
+define ('MAP_DIR', '../maps/');
 define ('INDENT', "\t");
 
 define ('FOYER_LENTGH', 18);
@@ -9,13 +9,13 @@ define ('FOYER_WIDTH', 16);
 build_foyer();
 
 function build_foyer() {
-    $map = "(define *state*"
-        . "\n`(((0 (\n";
+    $map = "`(0 (\n";
     $map .= build_foyer_constructions();
     $map .= "\n".INDENT.")\n";
     $map .= build_foyer_floor();
+    $map .= "\n".INDENT.";(ile do nastepnego)\n";
     $map .= INDENT."1"
-        . "\n))))";
+        . "\n)";
 save_to_file('foyer', $map);
 }
 
@@ -32,7 +32,7 @@ function build_foyer_floor() {
     $map_[] = "\n".INDENT.")))\n";
     
     $map = implode(" ", $map_);
-    save_to_file('foyer_floor', $map);
+//    save_to_file('foyer_floor', $map);
     return $map;
 }
 
@@ -86,7 +86,7 @@ function build_foyer_constructions() {
     add_map_element($map_, "3 9", 'stair1');
         
     $map = implode("\n", $map_);
-    save_to_file('foyer_constructions', $map);
+//    save_to_file('foyer_constructions', $map);
     return $map;
 }
 
@@ -97,7 +97,7 @@ function add_hero(&$map_, $coordinates) {
 }
 
 function save_to_file($name, $content) {
-    $file = fopen(MAP_DIR.$name, 'w+');
+    $file = fopen(MAP_DIR.$name.".scm", 'w+');
     fwrite($file, $content);
     fclose($file);
 }
