@@ -2,6 +2,7 @@
 define ('NL', '<br />');
 define ('MAP_DIR', '../maps/');
 define ('INDENT', "\t");
+define ('LOUD', false);
 
 define ('FOYER_LENTGH', 18);
 define ('FOYER_WIDTH', 16);
@@ -166,18 +167,24 @@ function save_to_file($name, $content) {
 }
 
 function add_map_comment(&$map_, $comment) {
-    echo(';;'.$comment.NL);
+    if (LOUD) {
+        echo(';;'.$comment.NL);
+    }
     $map_[] = INDENT.';;'.$comment;
 }
 
 function add_floor_element(&$map_, $coordinates, $floor_type) {
-    echo($coordinates.NL);
+    if (LOUD){
+        echo($coordinates.NL);
+    }
     unset($map_[$coordinates]);
     $map_[$coordinates] = "($coordinates $floor_type)";
 }
 
 function add_map_element(&$map_, $coordinates, $object_type) {
-    echo($coordinates.NL);
+    if (LOUD) {
+        echo($coordinates.NL);
+    }
     unset($map_[$coordinates]);
     $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
