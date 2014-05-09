@@ -1,30 +1,46 @@
 <?php
 define ('NL', '<br />');
 define ('MAP_DIR', 'maps/');
-define ('INDENT', '     ');
+define ('INDENT', "\t");
 
 define ('FOYER_LENTGH', 18);
 define ('FOYER_WIDTH', 16);
 
 build_foyer();
-build_foyer_floor();
+
+function build_foyer() {
+    $map = "(define *state*"
+        . "\n`(((0 (\n";
+    $map .= build_foyer_constructions();
+    $map .= "\n".INDENT.")\n";
+    $map .= build_foyer_floor();
+    $map .= INDENT."1"
+        . "\n))))";
+save_to_file('foyer', $map);
+}
 
 function build_foyer_floor() {
-    $map_ = [];
+    $map_ = ["\n"];
     add_map_comment($map_, 'regular floor');
-    $map_[] = "\n".INDENT.'((3 (';
+    $map_[] = "\n".INDENT."((3 (\n".INDENT.INDENT;
     
     for ($i = 2; $i<=FOYER_WIDTH-1; $i++) {
         for ($j = 2; $j<=FOYER_LENTGH-1; $j++) {
             add_floor_element($map_, "$i $j", "9");
         }
     }
-    $map_[] = INDENT.')))';
-    save_to_file('foyer_floor', implode(" ", $map_));
+    $map_[] = "\n".INDENT.")))\n";
+    
+    $map = implode(" ", $map_);
+    save_to_file('foyer_floor', $map);
+    return $map;
 }
 
-function build_foyer() {
+function build_foyer_constructions() {
     $map_ = [];
+    
+    add_map_comment($map_, 'hero');
+    add_hero($map_, "6 2");
     
     add_map_comment($map_, 'upper left wall');
     for ($i = 1; $i<=FOYER_LENTGH; $i++) {
@@ -55,8 +71,29 @@ function build_foyer() {
     for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
         add_map_element($map_, "$i ".FOYER_LENTGH, 'Hdoor');
     }
+    
+    add_map_comment($map_, 'stairs');
+    for ($i=2; $i<=3; $i++) {
+        for ($j=2; $j<=6; $j++) {
+            add_map_element($map_, "$i $j", 'stair-wall');
+        }
+    }
+    add_map_element($map_, "2 7", 'stair3');
+    add_map_element($map_, "3 7", 'stair3');
+    add_map_element($map_, "2 8", 'stair2');
+    add_map_element($map_, "3 8", 'stair2');
+    add_map_element($map_, "2 9", 'stair1');
+    add_map_element($map_, "3 9", 'stair1');
         
-    save_to_file('foyer', implode("\n", $map_));
+    $map = implode("\n", $map_);
+    save_to_file('foyer_constructions', $map);
+    return $map;
+}
+
+function add_hero(&$map_, $coordinates) {
+    $map_[] = INDENT."(HERO 0 "
+        . $coordinates
+        . " 0 0 (,(cons 'NIDERITE 0)) \"the hero\" ,hero-step ,id-collision ,hero-action)";
 }
 
 function save_to_file($name, $content) {
