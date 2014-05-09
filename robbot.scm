@@ -617,11 +617,12 @@
 						      ("Hdoor" 6)
 						      ("a key" 7)
 						      ("Uwall" 2)
+						      ("Lwall" 3)
+						      ("Uwindow" 3)
 						      ("stair-wall" 2)
 						      ("stair3" 2)
 						      ("stair2" 1)
 						      ("stair1" 3)
-						      ("Lwall" 3)
 						      ("a laser beam" 3)
 						      ("a laser gun" 3)
 						      ("a niderite sample" 4)
@@ -655,7 +656,7 @@
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define *state* 
-  `(,(list (include "maps/foyer.scm")
+  `(,(list (include "maps/hallway.scm")
 	   #;(include "sector-2.scm"))))
 
 (add-timer! 200

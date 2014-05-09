@@ -7,7 +7,7 @@ define ('LOUD', false);
 define ('FOYER_LENTGH', 18);
 define ('FOYER_WIDTH', 16);
 
-define ('HALLWAY_LENTGH', 80);
+define ('HALLWAY_LENTGH', 64);
 define ('HALLWAY_WIDTH', 14);
 
 build_foyer();
@@ -15,7 +15,7 @@ build_hallway();
 
 function build_hallway() {
     $map = "`(0 (\n";
-    $map .= build_hallway_constructions();
+    $map .= build_hallway_constructions(2, ['Uwindow', 'Uwindow']);
     $map .= "\n".INDENT.")\n";
     $map .= build_hallway_floor();
     $map .= "\n".INDENT.";(ile do nastepnego)\n";
@@ -24,7 +24,7 @@ function build_hallway() {
     save_to_file('hallway', $map);
 }
 
-function build_hallway_constructions() {
+function build_hallway_constructions($window_distance, $window_tiles_) {
     $map_ = [];
     
     add_map_comment($map_, 'hero');
@@ -48,6 +48,23 @@ function build_hallway_constructions() {
     add_map_comment($map_, 'lower left wall');
     for ($i = 2; $i<=HALLWAY_WIDTH; $i++) {
         add_map_element($map_, "$i ".HALLWAY_LENTGH, 'Lwall');
+    }
+    
+    add_map_comment($map_, 'upper left windows I level');
+    for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
+        foreach ($window_tiles_ as $key=>$tile_name) {
+            add_map_element($map_, "1 ".($i+$key), $tile_name);
+        }
+        $i += count($window_tiles_); 
+    }
+    
+    add_map_comment($map_, 'door in');
+    for ($i=intval(HALLWAY_WIDTH/2); $i<=intval(HALLWAY_WIDTH/2)+1; $i++) {
+        add_map_element($map_, "$i ".HALLWAY_LENTGH, 'Hdoor');
+    }
+    add_map_comment($map_, 'door out');
+    for ($i=intval(HALLWAY_WIDTH/2); $i<=intval(HALLWAY_WIDTH/2)+1; $i++) {
+        add_map_element($map_, "$i 1", 'Hdoor');
     }
     
     $map = implode("\n", $map_);
