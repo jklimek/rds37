@@ -512,7 +512,7 @@
 				   ,(load-image "robbot-art/Uwall.png") ; 2
 				   ,(load-image "robbot-art/Lwall.png") ; 3
 				   ,(load-image "robbot-art/b5.png") ; 4
-				   ,(load-image "robbot-art/b9.png") ; 5
+				   ,(load-image "robbot-art/b5.png") ; 5
 				   ,(load-image "robbot-art/b7.png") ; 6
 				   ,(load-image "robbot-art/key.png") ; 7
 				   ,(load-image "robbot-art/b3.png") ; 8
