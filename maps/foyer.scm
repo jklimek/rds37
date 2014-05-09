@@ -1,6 +1,6 @@
 `(0 (
 	;;hero
-	(HERO 0 6 2 0 0 (,(cons 'NIDERITE 0)) "the hero" ,hero-step ,id-collision ,hero-action)
+	(HERO 0 9 17 0 0 (,(cons 'NIDERITE 0)) "the hero" ,hero-step ,id-collision ,hero-action)
 	;;upper left wall
 	(Uwall1:2 0 1 2 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:3 0 1 3 0 0 () "Uwall" ,id-step ,id-collision ,id-action)

@@ -6,7 +6,68 @@ define ('INDENT', "\t");
 define ('FOYER_LENTGH', 18);
 define ('FOYER_WIDTH', 16);
 
+define ('HALLWAY_LENTGH', 80);
+define ('HALLWAY_WIDTH', 14);
+
 build_foyer();
+build_hallway();
+
+function build_hallway() {
+    $map = "`(0 (\n";
+    $map .= build_hallway_constructions();
+    $map .= "\n".INDENT.")\n";
+    $map .= build_hallway_floor();
+    $map .= "\n".INDENT.";(ile do nastepnego)\n";
+    $map .= INDENT."1"
+        . "\n)";
+    save_to_file('hallway', $map);
+}
+
+function build_hallway_constructions() {
+    $map_ = [];
+    
+    add_map_comment($map_, 'hero');
+    add_hero($map_, "9 ".(HALLWAY_LENTGH-1));
+    
+    add_map_comment($map_, 'upper left wall');
+    for ($i = 1; $i<=HALLWAY_LENTGH; $i++) {
+        add_map_element($map_, "1 $i", 'Uwall');
+    }
+    
+    add_map_comment($map_, 'lower right wall');
+    for ($i = 2; $i<=HALLWAY_LENTGH; $i++) {
+        add_map_element($map_, HALLWAY_WIDTH." $i", 'Lwall');
+    }
+    
+    add_map_comment($map_, 'upper right wall');
+    for ($i = 1; $i<=HALLWAY_WIDTH; $i++) {
+        add_map_element($map_, "$i 1", 'Uwall');
+    }
+    
+    add_map_comment($map_, 'lower left wall');
+    for ($i = 2; $i<=HALLWAY_WIDTH; $i++) {
+        add_map_element($map_, "$i ".HALLWAY_LENTGH, 'Lwall');
+    }
+    
+    $map = implode("\n", $map_);
+    return $map;
+}
+
+function build_hallway_floor() {
+    $map_ = ["\n"];
+    add_map_comment($map_, 'regular floor');
+    $map_[] = "\n".INDENT."((3 (\n".INDENT.INDENT;
+    
+    for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
+        for ($j = 2; $j<=HALLWAY_LENTGH-1; $j++) {
+            add_floor_element($map_, "$i $j", "9");
+        }
+    }
+    $map_[] = "\n".INDENT.")))\n";
+    
+    $map = implode(" ", $map_);
+    return $map;
+}
 
 function build_foyer() {
     $map = "`(0 (\n";
@@ -16,7 +77,7 @@ function build_foyer() {
     $map .= "\n".INDENT.";(ile do nastepnego)\n";
     $map .= INDENT."1"
         . "\n)";
-save_to_file('foyer', $map);
+    save_to_file('foyer', $map);
 }
 
 function build_foyer_floor() {
@@ -32,7 +93,6 @@ function build_foyer_floor() {
     $map_[] = "\n".INDENT.")))\n";
     
     $map = implode(" ", $map_);
-//    save_to_file('foyer_floor', $map);
     return $map;
 }
 
@@ -40,7 +100,7 @@ function build_foyer_constructions() {
     $map_ = [];
     
     add_map_comment($map_, 'hero');
-    add_hero($map_, "6 2");
+    add_hero($map_, "9 ".(FOYER_LENTGH-1));
     
     add_map_comment($map_, 'upper left wall');
     for ($i = 1; $i<=FOYER_LENTGH; $i++) {
@@ -86,7 +146,6 @@ function build_foyer_constructions() {
     add_map_element($map_, "3 9", 'stair1');
         
     $map = implode("\n", $map_);
-//    save_to_file('foyer_constructions', $map);
     return $map;
 }
 
