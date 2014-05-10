@@ -26,6 +26,8 @@ define ('DOOR_NAME', 'a door');
 define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
 define ('WINDOW_NAME', 'a window');
 
+define('HERO_TILE', 'LUDEK_H_B');
+
 build_foyer();
 build_hallway();
 
@@ -73,7 +75,7 @@ function build_hallway_floor_sequence($length, $shift_) {
     
     for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
         for ($j = 2; $j<=HALLWAY_LENTGH-1; $j++) {
-            add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version($i, $j));
+            add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version());
         }
     }
     $shadow_builder = new ShadowBuilder(HALLWAY_LENTGH, HALLWAY_WIDTH);
@@ -105,7 +107,7 @@ function overlay_shadow(&$floor_, $shadow_, $shift_) {
         $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
         $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
         if (isset($floor_[$x.' '.$y])) {
-            add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($x, $y, $tile_['val']));
+            add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($tile_['val']));
         }
     }
 }
@@ -128,7 +130,7 @@ function build_foyer_floor() {
     
     for ($i = 2; $i<=FOYER_WIDTH-1; $i++) {
         for ($j = 2; $j<=FOYER_LENTGH-1; $j++) {
-            add_floor_element($map_, "$i $j", eval_floor_tile_version($i, $j));
+            add_floor_element($map_, "$i $j", eval_floor_tile_version());
         }
     }
     $map_[] = "\n".INDENT.")))\n";
@@ -137,9 +139,8 @@ function build_foyer_floor() {
     return $map;
 }
 
-function eval_floor_tile_version($i, $j, $light = '3') {
-    $step = (($i+$j)%2)? 1: 2;
-    return 10 + 2 * ($light - 1) + $step;
+function eval_floor_tile_version($light = '3') {
+    return 'FLOOR_'.$light;
 }
 
 function build_foyer_constructions() {
@@ -210,7 +211,8 @@ function add_rectangle_to_map(
 function add_hero(&$map_, $coordinates) {
     $map_[] = INDENT."(HERO 0 "
         . $coordinates
-        . " 0 0 ((unquote (cons (quote NIDERITE) 0))) \"the hero\" 0 (unquote hero-step) "
+        . " 0 0 ((unquote (cons (quote NIDERITE) 0))) \"the hero\" ,"
+            .HERO_TILE. " (unquote hero-step) "
             . "(unquote id-collision) (unquote hero-action)) ;; !";
 }
 
@@ -232,7 +234,7 @@ function add_floor_element(&$map_, $coordinates, $floor_type) {
         echo($coordinates.NL);
     }
 //    unset($map_[$coordinates]);
-    $map_[$coordinates] = "($coordinates $floor_type)";
+    $map_[$coordinates] = "($coordinates ,$floor_type)";
 }
 
 function add_map_element(&$map_, $coordinates, $file_name, $object_type) {

@@ -692,7 +692,7 @@
     (include "maps/hallway.scm")
    )))
 
-(add-timer! 80
+(add-timer! 200
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
