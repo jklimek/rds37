@@ -43,6 +43,12 @@
 	((eq? key (caar al)) (cdar al))
 	(else (AL:lookup key (cdr al)))))
 
+(define (AL:assoc key al)
+;  (write `(assoc ,key)) (newline)
+  (cond ((null? al) #f)
+	((eq? key (caar al)) (car al)) ; !
+	(else (AL:assoc key (cdr al)))))
+
 (define (AL:update key val al)
 ;  (write `(update ,key ,val)) (newline)
   (cond ((null? al) al) ;; ?
@@ -99,6 +105,7 @@
                    O:sector O:x O:y
                    O:dx O:dy
                    O:STATE O:name
+		   O:sprite-id
                    O:step O:on-collision O:on-action))
 ;;; -- "ramka podlogowa" ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define-accessors (F:length F:tiles))
@@ -186,7 +193,7 @@
 ;(find 'b '(((s1 ((a 1) (b 1) (c 1))) (s2 ((q 2) (dupa 2) (w 2))) )))
 
 (define (find-at sector-id x y world)
-  (let* ((objects (car (AL:lookup sector-id (W:sectors world))))
+  (let* ((objects (S:objects (AL:assoc sector-id (W:sectors world))))
 	 (found (filter (lambda (o)
 			  (and (eq? (O:x o) x)
 			       (eq? (O:y o) y)))
@@ -460,7 +467,7 @@
 (define (std-step world)
   (let* ((hero (find 'HERO world))
 	 (sector-id (O:sector hero))
-	 (sector (cons sector-id (AL:lookup sector-id (W:sectors world))))
+	 (sector (AL:assoc sector-id (W:sectors world)))
 	 (objects (S:objects sector))
 	 (floors (S:floor-frames sector))
 	 (to-next (S:to-next-floor-frame sector))
@@ -553,10 +560,10 @@
 			  (size (image-size sprite))
 			  (height (cadr size))
 			  (y1 (- y (- height 32))))
-		     (if (and (> x -33)
-			      (> y -33)
-			      (< x 673)
-			      (< y1 481))
+		     (if (and (> x -65)
+			      (> y -65)
+			      (< x 705)
+			      (< y1 545))
 			 (draw-image! sprite x y1)))))
     *display*)))
 
@@ -592,7 +599,7 @@
 	 (top-y 0)
 	 (hero-visual-x 11.0)
 	 (hero-visual-y 11.0)
-	 (hero (cons 'HERO (AL:lookup 'HERO objects)))
+	 (hero (AL:assoc 'HERO objects))
 	 (hero-x (O:x hero))
 	 (hero-y (O:y hero))
 	 (diff-x (- hero-visual-x hero-x))
@@ -613,7 +620,7 @@
 				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
 		floors)
 	   ;;; obiekty:
-	   (map (match-lambda ((id sector map-x map-y dx dy state name . _)
+	   (map (match-lambda ((id sector map-x map-y dx dy state name sprite-index . _)
 			       (let* ((map-x (+ map-x diff-x)) ;; centrowanie na bohatera
 				      (map-y (+ map-y diff-y)) ;; 
 				      (disp-x
@@ -621,26 +628,7 @@
 					  (* tile-half-width (- map-x map-y))))
 				      (disp-y
 				       (+ top-y
-					  (* tile-half-height (+ map-x map-y))))
-				      (sprite-index
-				       ((match-lambda 
-				       	      ("the hero" 0)
-						      ("an evil" 1)
-						      ("carpet" 5)
-						      ("Hdoor" 6)
-						      ("a key" 7)
-						      ("Uwall" 2)
-						      ("Lwall" 3)
-						      ("Uwindow" 3)
-						      ("stair-wall" 2)
-						      ("stair3" 2)
-						      ("stair2" 1)
-						      ("stair1" 3)
-						      ("a laser beam" 3)
-						      ("a laser gun" 3)
-						      ("a niderite sample" 4)
-						      (otherwise 6) ;?
-						      ) name)))
+					  (* tile-half-height (+ map-x map-y)))))				      
 				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
 		(sort-objects-for-display objects hero-x hero-y))
 	   '()  ;; do rysowania dodatkowego krapu
@@ -650,7 +638,7 @@
 (define (current-view world)
   (let* ((hero (find 'HERO world))
 	 (sector-id (O:sector hero))
-	 (sector (cons sector-id (AL:lookup sector-id (W:sectors world)))))
+	 (sector (AL:assoc sector-id (W:sectors world))))
     (cons (S:objects sector) (cadar (S:floor-frames sector)))))
 
 
@@ -678,10 +666,10 @@
 (define *state* 
   `(,(list 
   	; (include "maps/foyer.scm")
-    (include "maps/hallway.scm")
+    (include "maps/hallway0.scm")
    )))
 
-(add-timer! 200
+(add-timer! 123
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
@@ -720,8 +708,8 @@
 			 23)
 		       (let* ((hero (find 'HERO old))
 			      (sector-id (O:sector hero))
-			      (objects (S:objects (cons sector-id (AL:lookup sector-id (W:sectors old)))))
-			      (floors (cadar (S:floor-frames (cons sector-id (AL:lookup sector-id (W:sectors old))))))
+			      (objects (S:objects (AL:assoc sector-id (W:sectors old))))
+			      (floors (cadar (S:floor-frames (AL:assoc sector-id (W:sectors old)))))
 			      (new-floors floors) ;; tu bedzie anonimowanie podlog!!! TODO
 			      (new-objects
 			       (let loop ((objects objects))
