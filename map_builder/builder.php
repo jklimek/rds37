@@ -96,8 +96,9 @@ function build_foyer_floor() {
     return $map;
 }
 
-function eval_floor_tile_version($i, $j) {
-    return (($i+$j)%2)? 11: 12;
+function eval_floor_tile_version($i, $j, $light = '3') {
+    $step = (($i+$j)%2)? 1: 2;
+    return 10 + 2 * ($light - 1) + $step;
 }
 
 function build_foyer_constructions() {

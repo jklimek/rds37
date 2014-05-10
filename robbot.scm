@@ -518,8 +518,16 @@
 				   ,(load-image "robbot-art/b3.png") ; 8
 				   ,(load-image "robbot-art/floor.png") ; 9 floor
 				   ,(load-image "robbot-art/floor_dark.png") ; 10 floor_dark
-				   ,(load-image "robbot-art/floor_a.png") ; 11
-				   ,(load-image "robbot-art/floor_b.png") ; 12
+				   ,(load-image "robbot-art/floor_a_1.png") ; 11
+				   ,(load-image "robbot-art/floor_b_1.png") ; 12
+				   ,(load-image "robbot-art/floor_a_2.png") ; 13
+				   ,(load-image "robbot-art/floor_b_2.png") ; 14
+				   ,(load-image "robbot-art/floor_a_3.png") ; 15
+				   ,(load-image "robbot-art/floor_b_3.png") ; 16
+				   ,(load-image "robbot-art/floor_a_4.png") ; 17
+				   ,(load-image "robbot-art/floor_b_4.png") ; 18
+				   ,(load-image "robbot-art/floor_a_5.png") ; 19
+				   ,(load-image "robbot-art/floor_b_5.png") ; 20
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
@@ -611,7 +619,8 @@
 				       (+ top-y
 					  (* tile-half-height (+ map-x map-y))))
 				      (sprite-index
-				       ((match-lambda ("the hero" 0)
+				       ((match-lambda 
+				       	      ("the hero" 0)
 						      ("an evil" 1)
 						      ("carpet" 5)
 						      ("Hdoor" 6)
@@ -656,9 +665,10 @@
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define *state* 
-  ; `(,(list (include "maps/foyer.scm")
-  `(,(list (include "maps/hallway.scm")
-	   #;(include "sector-2.scm"))))
+  `(,(list 
+  	; (include "maps/foyer.scm")
+    (include "maps/hallway.scm")
+   )))
 
 (add-timer! 200
 	    (lambda()
