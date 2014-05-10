@@ -23,7 +23,7 @@ define ('WALL_NAME', 'a wall');
 define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
 define ('HORIZONTAL_DOOR_TILE_L', 'DOOR_CLOSED_V_R');
 define ('DOOR_NAME', 'a door');
-define ('WINDOW_TILE', 'WINDOW_V_DARK');
+define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
 define ('WINDOW_NAME', 'a window');
 
 build_foyer();
