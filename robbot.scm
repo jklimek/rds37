@@ -476,25 +476,43 @@
 
 (define (std-step world)
   (let* ((hero (find 'HERO world))
+	 (hero-x (O:x hero))
+	 (hero-y (O:y hero))
+	 (hero-state (O:STATE hero))
+	 (hero-heartrate (AL:lookup 'HEARTRATE hero-state))
 	 (sector-id (O:sector hero))
 	 (sector (AL:assoc sector-id (W:sectors world)))
 	 (objects (S:objects sector))
 	 (floors (S:floor-frames sector))
+	 (cur-floor (car floors))
+	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
+				  (F:tiles cur-floor))))
+	 (hero-floor-shade (caddr hero-floor))
+	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -13)
+					((eq? hero-floor-shade FLOOR_2) -6)
+					((eq? hero-floor-shade FLOOR_3) 0)
+					((eq? hero-floor-shade FLOOR_4) 3)
+					((eq? hero-floor-shade FLOOR_5) 5)))
+	 (new-hero `(HERO
+		     ,sector-id ,hero-x ,hero-y
+		     ,(O:dx hero) ,(O:dy hero)
+		     ,(AL:update 'HEARTRATE (+ hero-heartrate hero-floor-shade-effect) hero-state)
+		     . ,(cdddr (cddddr hero))))
 	 (to-next (S:to-next-floor-frame sector))
-	 ;;; no i przeliczyć podłogi!
 	 (new-world `(,(map (lambda (sec)
 			      (if (eq? (S:id sec) sector-id)
 				  (let* ((floor-frames (S:floor-frames sec))
 					 (cur-frame (car floor-frames))
 					 (frame-length (F:length cur-frame)))
 				    (if (> to-next 0)
-					`(,sector-id ,objects ,floors ,(- to-next 1))
+					`(,sector-id ,(S:objects sec) ,floors ,(- to-next 1))
 					(let* ((new-floors (rot-list floor-frames))
 					       (new-cur-frame (car new-floors))
 					       (new-to-next (F:length new-cur-frame)))
-					  `(,sector-id ,objects ,new-floors ,new-to-next))))
+					  `(,sector-id ,(S:objects sec) ,new-floors ,new-to-next))))
 				  sec))
-			    (W:sectors world)))))
+			    (W:sectors ((T:update<o> new-hero) world))))))
+;    (write (find 'HERO new-world)) (newline)
     (let loop ((pend objects)
 	       (world new-world))
       (if (null? pend)
@@ -572,6 +590,7 @@
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
 
 (define *display* '()) ;; !!
+(define *heartrate-indicator* 50)
 
 (define (mk-display-message msg x y)
   (lambda ()    
@@ -583,9 +602,12 @@
 			     (draw-image! (render-text msg *font*) x y)))
 	      msgs)))
 
+
+(define (mk-bar-image)
+  (rectangle (max 0 (min 600 (to-int (* (+ *heartrate-indicator* (random 4)) 3)))) 8 #xAA0000))
+
 (define display-world
  (lambda()
-   ;miejsce na statusbar czy co
    (for-each
     (match-lambda ((x y sprite-index)
 		   (let* ((sprite (array-ref *sprites* sprite-index))
@@ -597,7 +619,9 @@
 			      (< x 705)
 			      (< y1 545))
 			 (draw-image! sprite x y1)))))
-    *display*)))
+    *display*)
+   (draw-image! (mk-bar-image) 33 460)
+))
 
 (define *joystick* 0)
 
@@ -637,6 +661,8 @@
 	 (diff-x (- hero-visual-x hero-x))
 	 (diff-y (- hero-visual-y hero-y)))
 ;(write `(,hero hx= ,hero-x hy= ,hero-y dx= ,diff-x dy= ,diff-y)) (newline)
+    (set! *heartrate-indicator*
+	  (AL:lookup 'HEARTRATE (O:STATE hero)))
     (set! *display*
 	  (append
 	   ;;; podlogi [swiatlo]:
