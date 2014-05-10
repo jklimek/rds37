@@ -704,7 +704,7 @@
 
 (define *state* (restart-world 'cokolwiek))
 
-(add-timer! 80
+(add-timer! (include "timer.scm")
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
