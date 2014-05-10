@@ -552,8 +552,12 @@
 		   (let* ((sprite (array-ref *sprites* sprite-index))
 			  (size (image-size sprite))
 			  (height (cadr size))
-			  (y (- y (- height 16))))
-		     (draw-image! sprite x y))))
+			  (y1 (- y (- height 32))))
+		     (if (and (> x -33)
+			      (> y -33)
+			      (< x 673)
+			      (< y1 481))
+			 (draw-image! sprite x y1)))))
     *display*)))
 
 (define *joystick* 0)
@@ -582,8 +586,8 @@
 ;  (write view) (newline)
   (let* ((objects (car view))
 	 (floors (cdr view))
-	 (tile-half-width 16)
-	 (tile-half-height 8)
+	 (tile-half-width 32)
+	 (tile-half-height 16)
 	 (center-x 320)
 	 (top-y 0)
 	 (hero-visual-x 11.0)
@@ -638,7 +642,7 @@
 						      (otherwise 6) ;?
 						      ) name)))
 				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
-		(sort-objects-for-display objects))
+		(sort-objects-for-display objects hero-x hero-y))
 	   '()  ;; do rysowania dodatkowego krapu
 	   ))))
 
@@ -650,16 +654,23 @@
     (cons (S:objects sector) (cadar (S:floor-frames sector)))))
 
 
-(define (sort-objects-for-display visibles-list)
-  (let ((dist-from-origin ;; sq.rt. is monotone anyway, and for some reason the observer stands at (66,66).
-	 (match-lambda ((id sector x y . _)
-			(+ (* (- 66.0 x) (- 66.0 x))
-			   (* (- 66.0 y) (- 66.0 y)))))))
-     (sort visibles-list
-	   (lambda (a b)
+(define (sort-objects-for-display visibles-list hx hy)
+  (let* ((viewport-safe-distance 16)
+	 (visibles-list (filter (match-lambda ((id sector x y . cośtam-cośtam) ;;;;;;;;; !!!!!!!!!!!!!!!!!
+					       (and (< x (+ hx viewport-safe-distance))
+						   (> x (- hx viewport-safe-distance))
+						   (< y (+ hy viewport-safe-distance))
+						   (> y (- hy viewport-safe-distance)))))
+				visibles-list))
+	 (dist-from-origin ;; sq.rt. is monotone anyway, and for some reason the observer stands at (666,666).
+	  (match-lambda ((id sector x y . _)
+			 (+ (* (- 666.0 x) (- 666.0 x))
+			    (* (- 666.0 y) (- 666.0 y)))))))
+;    (write (length visibles-list)) (newline)
+    (sort visibles-list
+	  (lambda (a b)
 	     (> (dist-from-origin a)
-		(dist-from-origin b))))))
-	   
+		(dist-from-origin b))))))	   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; the main loop crap
@@ -670,7 +681,7 @@
     (include "maps/hallway.scm")
    )))
 
-(add-timer! 200
+(add-timer! 100
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
