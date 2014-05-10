@@ -1,7 +1,7 @@
 `(0 (
 	;;hero
 	(HERO 0 9 17 0 0 (,(cons 'NIDERITE 0)) "the hero" ,hero-step ,id-collision ,hero-action)
-	;;upper left wall
+	;;foyer upper left wall
 	(Uwall1:2 0 1 2 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:3 0 1 3 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:4 0 1 4 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -19,24 +19,25 @@
 	(Uwall1:16 0 1 16 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:17 0 1 17 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:18 0 1 18 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
-	;;lower right wall
-	(Lwall16:2 0 16 2 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:3 0 16 3 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:4 0 16 4 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:5 0 16 5 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:6 0 16 6 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:7 0 16 7 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:8 0 16 8 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:9 0 16 9 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:10 0 16 10 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:11 0 16 11 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:12 0 16 12 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:13 0 16 13 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:14 0 16 14 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:15 0 16 15 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:16 0 16 16 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	(Lwall16:17 0 16 17 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	;;upper right wall
+	;;foyer lower right wall
+	(Lwall17:2 0 17 2 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:3 0 17 3 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:4 0 17 4 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:5 0 17 5 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:6 0 17 6 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:7 0 17 7 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:8 0 17 8 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:9 0 17 9 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:10 0 17 10 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:11 0 17 11 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:12 0 17 12 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:13 0 17 13 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:14 0 17 14 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:15 0 17 15 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:16 0 17 16 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:17 0 17 17 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	(Lwall17:18 0 17 18 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
+	;;foyer upper right wall
 	(Uwall1:1 0 1 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall2:1 0 2 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall3:1 0 3 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -49,7 +50,7 @@
 	(Uwall14:1 0 14 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall15:1 0 15 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall16:1 0 16 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
-	;;lower left wall
+	;;foyer lower left wall
 	(Lwall2:18 0 2 18 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall3:18 0 3 18 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall4:18 0 4 18 0 0 () "Lwall" ,id-step ,id-collision ,id-action)

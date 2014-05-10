@@ -124,25 +124,7 @@ function build_foyer_constructions() {
     add_map_comment($map_, 'hero');
     add_hero($map_, "9 ".(FOYER_LENTGH-1));
     
-    add_map_comment($map_, 'upper left wall');
-    for ($i = 1; $i<=FOYER_LENTGH; $i++) {
-        add_map_element($map_, "1 $i", 'Uwall');
-    }
-    
-    add_map_comment($map_, 'lower right wall');
-    for ($i = 2; $i<=FOYER_LENTGH; $i++) {
-        add_map_element($map_, FOYER_WIDTH." $i", 'Lwall');
-    }
-    
-    add_map_comment($map_, 'upper right wall');
-    for ($i = 1; $i<=FOYER_WIDTH; $i++) {
-        add_map_element($map_, "$i 1", 'Uwall');
-    }
-    
-    add_map_comment($map_, 'lower left wall');
-    for ($i = 2; $i<=FOYER_WIDTH; $i++) {
-        add_map_element($map_, "$i ".FOYER_LENTGH, 'Lwall');
-    }
+    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'Uwall', 'Lwall', 'foyer');
     
     add_map_comment($map_, 'boss door');
     for ($i=intval(FOYER_WIDTH/2)-1; $i<=intval(FOYER_WIDTH/2)+2; $i++) {
@@ -169,6 +151,31 @@ function build_foyer_constructions() {
         
     $map = implode("\n", $map_);
     return $map;
+}
+
+function add_rectangle_to_map(
+    &$map_, $start_x, $start_y, $width, $length, $upper_wall_tile, $lower_wall_tile, $name
+) {
+    
+    add_map_comment($map_, $name. ' upper left wall');
+    for ($i = $start_y; $i<$start_y+$length; $i++) {
+        add_map_element($map_, "$start_x $i", $upper_wall_tile);
+    }
+    
+    add_map_comment($map_, $name. ' lower right wall');
+    for ($i = $start_y+1; $i<$start_y+$length; $i++) {
+        add_map_element($map_, ($start_x + $width)." $i", $lower_wall_tile);
+    }
+    
+    add_map_comment($map_, $name. ' upper right wall');
+    for ($i = $start_x; $i<$start_x+$width; $i++) {
+        add_map_element($map_, "$i 1", $upper_wall_tile);
+    }
+    
+    add_map_comment($map_, $name. ' lower left wall');
+    for ($i = $start_x+1; $i<$start_x+$width; $i++) {
+        add_map_element($map_, "$i ".FOYER_LENTGH, $lower_wall_tile);
+    }
 }
 
 function add_hero(&$map_, $coordinates) {
