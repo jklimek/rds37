@@ -106,7 +106,7 @@ function overlay_shadow(&$floor_, $shadow_, $shift_) {
     foreach ($shadow_ as $tile_) {
         $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
         $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
-        if (isset($floor_[$x.' '.$y])) {
+        if (isset($floor_[$x.' '.$y]) && strpos($floor_[$x.' '.$y], 'FLOOR_1') === false) {
             add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($tile_['val']));
         }
     }
