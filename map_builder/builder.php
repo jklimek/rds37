@@ -58,13 +58,13 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
         $i += count($window_tiles_); 
     }
     
-    add_map_comment($map_, 'door in');
-    add_map_element($map_, (HALLWAY_WIDTH/2)." 1", HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
-    add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
-    
     add_map_comment($map_, 'door out');
-    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
-    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME);
+    
+    add_map_comment($map_, 'door in');
+    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME);
     
     $map = implode("\n", $map_);
     return $map;
@@ -152,19 +152,12 @@ function build_foyer_constructions() {
     add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer');
     
     add_map_comment($map_, 'boss door');
-    add_map_element($map_, (FOYER_WIDTH/2)." 1", HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
-//    add_map_element($map_, "$i 1", HORIZONTAL_DOOR_TILE, DOOR_NAME);
-//    for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
-//        add_map_element($map_, "$i 1", HORIZONTAL_DOOR_TILE, DOOR_NAME);
-//    }
+    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME);
     
     add_map_comment($map_, 'front door');
-    add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
-//    for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
-//        add_map_element($map_, "$i ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE, DOOR_NAME);
-//    }
+    add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME);
     
 //    add_map_comment($map_, 'stairs');
 //    for ($i=2; $i<=3; $i++) {
