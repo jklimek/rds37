@@ -737,8 +737,8 @@
 		('PLAY
 		 (let ((old-state *state*))
 		   (set-display-procedure! display-world)
-		   (set-to-display! (current-view *state*))
 		   (set! *state* (std-step *state*))
+		   (set-to-display! (current-view *state*))
 
 		   (if (not (find 'HERO *state*))		       
 		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)
