@@ -666,7 +666,7 @@
 (define *state* 
   `(,(list 
   	; (include "maps/foyer.scm")
-    (include "maps/hallway0.scm")
+    (include "maps/hallway.scm")
    )))
 
 (add-timer! 123

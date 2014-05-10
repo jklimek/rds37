@@ -17,6 +17,15 @@ define ('FOYER_WIDTH', 16);
 define ('HALLWAY_LENTGH', 64);
 define ('HALLWAY_WIDTH', 14);
 
+define ('UPPER_WALL_TILE', 'WALL_U');
+define ('LOWER_WALL_TILE', 'FLOOR_3');
+define ('WALL_NAME', 'a wall');
+define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
+define ('HORIZONTAL_DOOR_TILE_L', 'DOOR_CLOSED_V_R');
+define ('DOOR_NAME', 'a door');
+define ('WINDOW_TILE', 'WINDOW_V_DARK');
+define ('WINDOW_NAME', 'a window');
+
 build_foyer();
 build_hallway();
 
@@ -37,24 +46,23 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     add_map_comment($map_, 'hero');
     add_hero($map_, "8 ".(HALLWAY_LENTGH-1));
     
-    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'Uwall', 'Lwall', 'hallway');
+    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'hallway');
     
     add_map_comment($map_, 'upper left windows I level');
     for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
         foreach ($window_tiles_ as $key=>$tile_name) {
-            add_map_element($map_, "1 ".($i+$key), $tile_name);
+            add_map_element($map_, "1 ".($i+$key), WINDOW_TILE, WINDOW_NAME);
         }
         $i += count($window_tiles_); 
     }
     
     add_map_comment($map_, 'door in');
-    for ($i=intval(HALLWAY_WIDTH/2); $i<=intval(HALLWAY_WIDTH/2)+1; $i++) {
-        add_map_element($map_, "$i ".HALLWAY_LENTGH, 'Hdoor');
-    }
+    add_map_element($map_, (HALLWAY_WIDTH/2)." 1", HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
+    
     add_map_comment($map_, 'door out');
-    for ($i=intval(HALLWAY_WIDTH/2); $i<=intval(HALLWAY_WIDTH/2)+1; $i++) {
-        add_map_element($map_, "$i 1", 'Hdoor');
-    }
+    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
     
     $map = implode("\n", $map_);
     return $map;
@@ -68,7 +76,8 @@ function build_hallway_floor_sequence($length, $shift_) {
             add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version($i, $j));
         }
     }
-    $shadow_builder = new ShadowBuilder();
+    $shadow_builder = new ShadowBuilder(HALLWAY_LENTGH, HALLWAY_WIDTH);
+    overlay_shadow($sequence_map_, $shadow_builder->build_pillars(1, 2), [0,0]);
     overlay_shadow($sequence_map_, $shadow_builder->build_cloud_layer(1), $shift_);
     
     $sequence_map_[] = "\n".INDENT."))\n";
@@ -83,7 +92,7 @@ function build_hallway_floor() {
     $map_[] = "\n".INDENT."(";
     
     for ($i=1; $i<=HALLWAY_LENTGH; $i++) {
-        $map_[] = build_hallway_floor_sequence(1, [1+$i%2, $i]);
+        $map_[] = build_hallway_floor_sequence(1, [1, $i]); //1+$i%2
     }
     
     $map_[] = ")\n";
@@ -139,64 +148,70 @@ function build_foyer_constructions() {
     add_map_comment($map_, 'hero');
     add_hero($map_, "9 ".(FOYER_LENTGH-1));
     
-    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'Uwall', 'Lwall', 'foyer');
+    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer');
     
     add_map_comment($map_, 'boss door');
-    for ($i=intval(FOYER_WIDTH/2)-1; $i<=intval(FOYER_WIDTH/2)+2; $i++) {
-        add_map_element($map_, "$i 1", 'Hdoor');
-    }
+    add_map_element($map_, (FOYER_WIDTH/2)." 1", HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
+//    add_map_element($map_, "$i 1", HORIZONTAL_DOOR_TILE, DOOR_NAME);
+//    for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
+//        add_map_element($map_, "$i 1", HORIZONTAL_DOOR_TILE, DOOR_NAME);
+//    }
     
     add_map_comment($map_, 'front door');
-    for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
-        add_map_element($map_, "$i ".FOYER_LENTGH, 'Hdoor');
-    }
+    add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE_L, DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE_R, DOOR_NAME);
+//    for ($i=intval(FOYER_WIDTH/2); $i<=intval(FOYER_WIDTH/2)+1; $i++) {
+//        add_map_element($map_, "$i ".FOYER_LENTGH, HORIZONTAL_DOOR_TILE, DOOR_NAME);
+//    }
     
-    add_map_comment($map_, 'stairs');
-    for ($i=2; $i<=3; $i++) {
-        for ($j=2; $j<=6; $j++) {
-            add_map_element($map_, "$i $j", 'stair-wall');
-        }
-    }
-    add_map_element($map_, "2 7", 'stair3');
-    add_map_element($map_, "3 7", 'stair3');
-    add_map_element($map_, "2 8", 'stair2');
-    add_map_element($map_, "3 8", 'stair2');
-    add_map_element($map_, "2 9", 'stair1');
-    add_map_element($map_, "3 9", 'stair1');
+//    add_map_comment($map_, 'stairs');
+//    for ($i=2; $i<=3; $i++) {
+//        for ($j=2; $j<=6; $j++) {
+//            add_map_element($map_, "$i $j", 'stair-wall');
+//        }
+//    }
+//    add_map_element($map_, "2 7", 'stair3');
+//    add_map_element($map_, "3 7", 'stair3');
+//    add_map_element($map_, "2 8", 'stair2');
+//    add_map_element($map_, "3 8", 'stair2');
+//    add_map_element($map_, "2 9", 'stair1');
+//    add_map_element($map_, "3 9", 'stair1');
         
     $map = implode("\n", $map_);
     return $map;
 }
 
 function add_rectangle_to_map(
-    &$map_, $start_x, $start_y, $width, $length, $upper_wall_tile, $lower_wall_tile, $name
+    &$map_, $start_x, $start_y, $width, $length, $name
 ) {
     
     add_map_comment($map_, $name. ' upper left wall');
     for ($i = $start_y; $i<$start_y+$length; $i++) {
-        add_map_element($map_, "$start_x $i", $upper_wall_tile);
+        add_map_element($map_, "$start_x $i", UPPER_WALL_TILE, WALL_NAME);
     }
     
     add_map_comment($map_, $name. ' lower right wall');
     for ($i = $start_y+1; $i<$start_y+$length; $i++) {
-        add_map_element($map_, ($start_x + $width - 1)." $i", $lower_wall_tile);
+        add_map_element($map_, ($start_x + $width - 1)." $i", LOWER_WALL_TILE, WALL_NAME);
     }
     
     add_map_comment($map_, $name. ' upper right wall');
     for ($i = $start_x; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i $start_y", $upper_wall_tile);
+        add_map_element($map_, "$i $start_y", UPPER_WALL_TILE, WALL_NAME);
     }
     
     add_map_comment($map_, $name. ' lower left wall');
     for ($i = $start_x+1; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i ".($start_y + $length - 1), $lower_wall_tile);
+        add_map_element($map_, "$i ".($start_y + $length - 1), LOWER_WALL_TILE, WALL_NAME);
     }
 }
 
 function add_hero(&$map_, $coordinates) {
     $map_[] = INDENT."(HERO 0 "
         . $coordinates
-        . " 0 0 (,(cons 'NIDERITE 0)) \"the hero\" ,hero-step ,id-collision ,hero-action)";
+        . " 0 0 ((unquote (cons (quote NIDERITE) 0))) \"the hero\" 0 (unquote hero-step) "
+            . "(unquote id-collision) (unquote hero-action)) ;; !";
 }
 
 function save_to_file($name, $content) {
@@ -220,7 +235,7 @@ function add_floor_element(&$map_, $coordinates, $floor_type) {
     $map_[$coordinates] = "($coordinates $floor_type)";
 }
 
-function add_map_element(&$map_, $coordinates, $object_type) {
+function add_map_element(&$map_, $coordinates, $file_name, $object_type) {
     if (LOUD) {
         echo($coordinates.NL);
     }
@@ -228,7 +243,7 @@ function add_map_element(&$map_, $coordinates, $object_type) {
     $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
         INDENT.'('.$object_type.'\1:\2 0 \1 \2 0 0 () "'.$object_type
-            .'" ,id-step ,id-collision ,id-action)',
+            .'" '.$file_name.' 3 (unquote id-step) (unquote id-collision) (unquote id-action))',
         $coordinates
     );
 }
