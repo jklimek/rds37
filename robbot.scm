@@ -695,13 +695,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define *state* 
-  `(,(list 
-  	; (include "maps/foyer.scm")
-    (include "maps/hallway.scm")
+
+(define (restart-world world)
+  `((
+     ,(include "maps/hallway.scm")
    )))
 
-(add-timer! 200
+
+(define *state* (restart-world 'cokolwiek))
+
+(add-timer! 80
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
