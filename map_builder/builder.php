@@ -243,7 +243,7 @@ function add_map_element(&$map_, $coordinates, $file_name, $object_type) {
     $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
         INDENT.'('.$file_name.'\1:\2 0 \1 \2 0 0 () "'.$object_type
-            .'" '.$file_name.' (unquote id-step) (unquote id-collision) (unquote id-action))',
+            .'" ,'.$file_name.' (unquote id-step) (unquote id-collision) (unquote id-action))',
         $coordinates
     );
 }
