@@ -13,20 +13,7 @@ class ShadowBuilder {
         $clouds_ = [];
         switch ($version) {
             case 1:
-                $clouds_ = $this->_merge_shadows(
-                    $this->_shift($this->_build_cloud(1), 10, 1),
-                    $this->_shift($this->_build_cloud(2), 3, 6),
-                    $this->_shift($this->_flip_horizontal($this->_build_cloud(1)), 13, 10),
-//                    $this->_shift($this->_build_cloud(1), 13, 21),
-//                    $this->_shift($this->_build_cloud(1), 1, 25),
-//                    $this->_shift($this->_build_cloud(1), 7, 28)
-//                    $this->_shift($this->_build_cloud(1), 4, 33),
-//                    $this->_shift($this->_build_cloud(1), 2, 39),
-//                    $this->_shift($this->_build_cloud(1), 1, 41),
-//                    $this->_shift($this->_build_cloud(1), 10, 49),
-//                    $this->_shift($this->_build_cloud(1), 5, 57),
-                    $this->_shift($this->_flip_horizontal($this->_build_cloud(1)), 2, 45)
-                );
+                $clouds_ = $this->_load_cloud_map();
                 break;
 
             default:
@@ -35,7 +22,25 @@ class ShadowBuilder {
         return $clouds_;
     }
     
-    private function _merge_shadows() {
+    private function _load_cloud_map() {
+        $clouds_ = [];
+        $file_ = file('builder_classes/clouds.txt', FILE_IGNORE_NEW_LINES);
+        foreach ($file_ as $j => $line) {
+            foreach (str_split($line) as $i => $char) {
+                switch ($char) {
+                    case '+':
+                        $clouds_[] = [$i+1, $j+1, 'val'=>'2'];
+                        break;
+                    case '#':
+                        $clouds_[] = [$i+1, $j+1, 'val'=>'1'];
+                        break;
+                }
+            }
+        }
+        return $clouds_;
+    }
+
+        private function _merge_shadows() {
         $shadows_deep_array_ = [];
         foreach (func_get_args() as $shadows_) {
             foreach($shadows_ as $shadow_){
