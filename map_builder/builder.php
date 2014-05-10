@@ -53,20 +53,78 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     return $map;
 }
 
-function build_hallway_floor() {
-    $map_ = ["\n"];
-    add_map_comment($map_, 'regular floor');
-    $map_[] = "\n".INDENT."((3 (\n".INDENT.INDENT;
+function build_hallway_floor_sequence(&$map_, $length, $shift_) {
+    $sequence_map_[] = "\n".INDENT."($length (\n".INDENT.INDENT;
     
     for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
         for ($j = 2; $j<=HALLWAY_LENTGH-1; $j++) {
-            add_floor_element($map_, "$i $j", eval_floor_tile_version($i, $j));
+            add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version($i, $j));
         }
     }
-    $map_[] = "\n".INDENT.")))\n";
     
+    overlay_cloud($sequence_map_, build_cloud(), $shift_);
+    
+    $sequence_map_[] = "\n".INDENT."))\n";
+    
+    $sequence_map = implode(' ', $sequence_map_);
+    return $sequence_map;
+}
+
+function build_hallway_floor() {
+    $map_ = ["\n"];
+    add_map_comment($map_, 'regular floor');
+    $map_[] = "\n".INDENT."(";
+    
+    for ($i=HALLWAY_LENTGH; $i>=1; $i--) {
+        $map_[] = build_hallway_floor_sequence($map_, 1, [1+$i%2, $i]);
+    }
+    
+    $map_[] = ")\n";
     $map = implode(" ", $map_);
     return $map;
+}
+
+function overlay_cloud(&$floor_, $cloud_, $shift_) {
+    foreach ($cloud_ as $tile_) {
+        $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
+        $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
+        if (isset($floor_[$x.' '.$y])) {
+            add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($x, $y, $tile_['val']));
+        }
+    }
+}
+
+function build_cloud() {
+    $cloud_ = [
+        [3, 1, 'val' => 2],
+        [4, 1, 'val' => 2],
+        [2, 2, 'val' => 2],
+        [3, 2, 'val' => 1],
+        [4, 2, 'val' => 2],
+        [5, 2, 'val' => 2],
+        [6, 2, 'val' => 2],
+        [1, 3, 'val' => 2],
+        [2, 3, 'val' => 1],
+        [3, 3, 'val' => 1],
+        [4, 3, 'val' => 1],
+        [5, 3, 'val' => 1],
+        [6, 3, 'val' => 2],
+        [7, 3, 'val' => 2],
+        [1, 4, 'val' => 2],
+        [2, 4, 'val' => 2],
+        [3, 4, 'val' => 1],
+        [4, 4, 'val' => 1],
+        [5, 4, 'val' => 1],
+        [6, 4, 'val' => 2],
+        [7, 4, 'val' => 2],
+        [2, 5, 'val' => 2],
+        [3, 5, 'val' => 2],
+        [4, 5, 'val' => 1],
+        [5, 5, 'val' => 2],
+        [3, 6, 'val' => 2],
+        [4, 6, 'val' => 2],
+    ];
+    return $cloud_;
 }
 
 function build_foyer() {
@@ -184,7 +242,7 @@ function add_floor_element(&$map_, $coordinates, $floor_type) {
     if (LOUD){
         echo($coordinates.NL);
     }
-    unset($map_[$coordinates]);
+//    unset($map_[$coordinates]);
     $map_[$coordinates] = "($coordinates $floor_type)";
 }
 
