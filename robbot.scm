@@ -560,10 +560,10 @@
 			  (size (image-size sprite))
 			  (height (cadr size))
 			  (y1 (- y (- height 32))))
-		     (if (and (> x -33)
-			      (> y -33)
-			      (< x 673)
-			      (< y1 481))
+		     (if (and (> x -65)
+			      (> y -65)
+			      (< x 705)
+			      (< y1 545))
 			 (draw-image! sprite x y1)))))
     *display*)))
 
@@ -669,7 +669,7 @@
     (include "maps/hallway0.scm")
    )))
 
-(add-timer! 200
+(add-timer! 123
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
