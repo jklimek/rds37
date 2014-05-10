@@ -649,7 +649,7 @@
 				      (disp-y
 				       (+ top-y
 					  (* tile-half-height (+ map-x map-y)))))
-				 `(,(to-int disp-x) ,(to-int disp-y) ,(- sprite-index 3)))))
+				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
 		floors)
 	   ;;; obiekty:
 	   (map (match-lambda ((id sector map-x map-y dx dy state name sprite-index . _)
