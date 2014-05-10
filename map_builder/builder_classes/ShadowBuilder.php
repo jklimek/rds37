@@ -101,7 +101,7 @@ class ShadowBuilder {
         
     public function build_pillars($version, $distance) {
         $pilars_ = [];
-        for ($i = 2; $i < $this->_length-2; $i+=$distance+1) {
+        for ($i = 1; $i < $this->_length-2; $i+=$distance+1) {
             $pilars_[] = [2, $i, 'val'=>1];
             $pilars_[] = [3, $i, 'val'=>1];
             $pilars_[] = [4, $i, 'val'=>2];

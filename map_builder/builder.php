@@ -79,7 +79,7 @@ function build_hallway_floor_sequence($length, $shift_) {
         }
     }
     $shadow_builder = new ShadowBuilder(HALLWAY_LENTGH, HALLWAY_WIDTH);
-    overlay_shadow($sequence_map_, $shadow_builder->build_pillars(1, 2), [0,0]);
+    overlay_shadow($sequence_map_, $shadow_builder->build_pillars(1, 3), [0,0]);
     overlay_shadow($sequence_map_, $shadow_builder->build_cloud_layer(1), $shift_);
     
     $sequence_map_[] = "\n".INDENT."))\n";
