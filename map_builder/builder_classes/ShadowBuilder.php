@@ -110,6 +110,7 @@ class ShadowBuilder {
             $pilars_[] = [2, $i, 'val'=>1];
             $pilars_[] = [3, $i, 'val'=>1];
             $pilars_[] = [4, $i, 'val'=>2];
+            $pilars_[] = [5, $i, 'val'=>2];
             $pilars_[] = [2, $i+1, 'val'=>2];
             $pilars_[] = [3, $i+1, 'val'=>2];
         }
