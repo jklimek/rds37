@@ -150,15 +150,24 @@
 			     (y (O:y object))
 			     (dx (O:dx object))
 			     (dy (O:dy object))
+			     (state (O:STATE object))
+			     (name (O:name object))
+			     (sprite-id (if (eq? object-id 'HERO)
+					    (match `(,dx ,dy)
+					      ((-1 0) LUDEK_V_B)
+					      ((0 -1) LUDEK_H_B)
+					      ((1 0) LUDEK_V_F)
+					      ((0 1) LUDEK_H_F))
+					    (O:sprite-id object)))
 			     (nx (+ x dx))
-			     (ny (+ y dy))
+			     (ny (+ y dy))			    
 			     (something? (find-at sector nx ny world)))
 ;    (write `(t-move leci o= ,object dx= ,dx dy= ,dy smt= ,something?)) (newline) ;;;
 			(if (or (not (= dx 0))
 				(not (= dy 0)))
 			    (if something?				
 				 ((O:on-collision something?) something? object world)
-				 ((T:update<o> `(,object-id ,sector ,nx ,ny ,dx ,dy . ,(cdddr (cdddr object))))
+				 ((T:update<o> `(,object-id ,sector ,nx ,ny ,dx ,dy ,state ,name ,sprite-id . ,(cdddr (cdddr (cdddr object)))))
 				  world))
 			    (T:identity world))))))
 
@@ -640,7 +649,7 @@
 				      (disp-y
 				       (+ top-y
 					  (* tile-half-height (+ map-x map-y)))))
-				 `(,(to-int disp-x) ,(to-int disp-y) ,(- sprite-index 3)))))
+				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
 		floors)
 	   ;;; obiekty:
 	   (map (match-lambda ((id sector map-x map-y dx dy state name sprite-index . _)
@@ -705,7 +714,8 @@
 		   (if (not (find 'HERO *state*))		       
 		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)
 				     ("PRESS FIRE." 180 196))
-				   (T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
+				   restart-world
+				   #;(T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
 
 		   (if (eq? *joystick* 'A) (set! *joystick* 0))
 
