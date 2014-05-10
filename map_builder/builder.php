@@ -82,7 +82,7 @@ function build_hallway_floor() {
     add_map_comment($map_, 'regular floor');
     $map_[] = "\n".INDENT."(";
     
-    for ($i=HALLWAY_LENTGH; $i>=1; $i--) {
+    for ($i=1; $i<=HALLWAY_LENTGH; $i++) {
         $map_[] = build_hallway_floor_sequence(1, [1+$i%2, $i]);
     }
     
@@ -91,8 +91,8 @@ function build_hallway_floor() {
     return $map;
 }
 
-function overlay_shadow(&$floor_, $shadow, $shift_) {
-    foreach ($shadow as $tile_) {
+function overlay_shadow(&$floor_, $shadow_, $shift_) {
+    foreach ($shadow_ as $tile_) {
         $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
         $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
         if (isset($floor_[$x.' '.$y])) {
