@@ -1,4 +1,11 @@
 <?php
+define ('CLASS_DIR', 'builder_classes/');
+
+function autoload($class) {
+    include CLASS_DIR . $class . '.php';
+}
+spl_autoload_register('autoload');
+
 define ('NL', '<br />');
 define ('MAP_DIR', '../maps/');
 define ('INDENT', "\t");
@@ -28,7 +35,7 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     $map_ = [];
     
     add_map_comment($map_, 'hero');
-    add_hero($map_, "9 ".(HALLWAY_LENTGH-1));
+    add_hero($map_, "8 ".(HALLWAY_LENTGH-1));
     
     add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'Uwall', 'Lwall', 'hallway');
     
@@ -53,7 +60,7 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     return $map;
 }
 
-function build_hallway_floor_sequence(&$map_, $length, $shift_) {
+function build_hallway_floor_sequence($length, $shift_) {
     $sequence_map_[] = "\n".INDENT."($length (\n".INDENT.INDENT;
     
     for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
@@ -61,8 +68,8 @@ function build_hallway_floor_sequence(&$map_, $length, $shift_) {
             add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version($i, $j));
         }
     }
-    
-    overlay_cloud($sequence_map_, build_cloud(), $shift_);
+    $shadow_builder = new ShadowBuilder();
+    overlay_shadow($sequence_map_, $shadow_builder->build_cloud_layer(1), $shift_);
     
     $sequence_map_[] = "\n".INDENT."))\n";
     
@@ -76,7 +83,7 @@ function build_hallway_floor() {
     $map_[] = "\n".INDENT."(";
     
     for ($i=HALLWAY_LENTGH; $i>=1; $i--) {
-        $map_[] = build_hallway_floor_sequence($map_, 1, [1+$i%2, $i]);
+        $map_[] = build_hallway_floor_sequence(1, [1+$i%2, $i]);
     }
     
     $map_[] = ")\n";
@@ -84,47 +91,14 @@ function build_hallway_floor() {
     return $map;
 }
 
-function overlay_cloud(&$floor_, $cloud_, $shift_) {
-    foreach ($cloud_ as $tile_) {
+function overlay_shadow(&$floor_, $shadow, $shift_) {
+    foreach ($shadow as $tile_) {
         $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
         $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
         if (isset($floor_[$x.' '.$y])) {
             add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($x, $y, $tile_['val']));
         }
     }
-}
-
-function build_cloud() {
-    $cloud_ = [
-        [3, 1, 'val' => 2],
-        [4, 1, 'val' => 2],
-        [2, 2, 'val' => 2],
-        [3, 2, 'val' => 1],
-        [4, 2, 'val' => 2],
-        [5, 2, 'val' => 2],
-        [6, 2, 'val' => 2],
-        [1, 3, 'val' => 2],
-        [2, 3, 'val' => 1],
-        [3, 3, 'val' => 1],
-        [4, 3, 'val' => 1],
-        [5, 3, 'val' => 1],
-        [6, 3, 'val' => 2],
-        [7, 3, 'val' => 2],
-        [1, 4, 'val' => 2],
-        [2, 4, 'val' => 2],
-        [3, 4, 'val' => 1],
-        [4, 4, 'val' => 1],
-        [5, 4, 'val' => 1],
-        [6, 4, 'val' => 2],
-        [7, 4, 'val' => 2],
-        [2, 5, 'val' => 2],
-        [3, 5, 'val' => 2],
-        [4, 5, 'val' => 1],
-        [5, 5, 'val' => 2],
-        [3, 6, 'val' => 2],
-        [4, 6, 'val' => 2],
-    ];
-    return $cloud_;
 }
 
 function build_foyer() {
