@@ -1,7 +1,7 @@
 `(0 (
 	;;hero
 	(HERO 0 9 63 0 0 (,(cons 'NIDERITE 0)) "the hero" ,hero-step ,id-collision ,hero-action)
-	;;upper left wall
+	;;hallway upper left wall
 	(Uwall1:2 0 1 2 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:5 0 1 5 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:6 0 1 6 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -35,7 +35,7 @@
 	(Uwall1:62 0 1 62 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:63 0 1 63 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall1:64 0 1 64 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
-	;;lower right wall
+	;;hallway lower right wall
 	(Lwall14:2 0 14 2 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall14:3 0 14 3 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall14:4 0 14 4 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
@@ -98,7 +98,7 @@
 	(Lwall14:61 0 14 61 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall14:62 0 14 62 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall14:63 0 14 63 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
-	;;upper right wall
+	;;hallway upper right wall
 	(Uwall1:1 0 1 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall2:1 0 2 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall3:1 0 3 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
@@ -111,7 +111,7 @@
 	(Uwall12:1 0 12 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall13:1 0 13 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
 	(Uwall14:1 0 14 1 0 0 () "Uwall" ,id-step ,id-collision ,id-action)
-	;;lower left wall
+	;;hallway lower left wall
 	(Lwall2:64 0 2 64 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall3:64 0 3 64 0 0 () "Lwall" ,id-step ,id-collision ,id-action)
 	(Lwall4:64 0 4 64 0 0 () "Lwall" ,id-step ,id-collision ,id-action)

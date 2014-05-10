@@ -656,6 +656,7 @@
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define *state* 
+  ; `(,(list (include "maps/foyer.scm")
   `(,(list (include "maps/hallway.scm")
 	   #;(include "sector-2.scm"))))
 

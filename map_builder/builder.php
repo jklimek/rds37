@@ -30,25 +30,7 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     add_map_comment($map_, 'hero');
     add_hero($map_, "9 ".(HALLWAY_LENTGH-1));
     
-    add_map_comment($map_, 'upper left wall');
-    for ($i = 1; $i<=HALLWAY_LENTGH; $i++) {
-        add_map_element($map_, "1 $i", 'Uwall');
-    }
-    
-    add_map_comment($map_, 'lower right wall');
-    for ($i = 2; $i<=HALLWAY_LENTGH; $i++) {
-        add_map_element($map_, HALLWAY_WIDTH." $i", 'Lwall');
-    }
-    
-    add_map_comment($map_, 'upper right wall');
-    for ($i = 1; $i<=HALLWAY_WIDTH; $i++) {
-        add_map_element($map_, "$i 1", 'Uwall');
-    }
-    
-    add_map_comment($map_, 'lower left wall');
-    for ($i = 2; $i<=HALLWAY_WIDTH; $i++) {
-        add_map_element($map_, "$i ".HALLWAY_LENTGH, 'Lwall');
-    }
+    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'Uwall', 'Lwall', 'hallway');
     
     add_map_comment($map_, 'upper left windows I level');
     for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
@@ -164,17 +146,17 @@ function add_rectangle_to_map(
     
     add_map_comment($map_, $name. ' lower right wall');
     for ($i = $start_y+1; $i<$start_y+$length; $i++) {
-        add_map_element($map_, ($start_x + $width)." $i", $lower_wall_tile);
+        add_map_element($map_, ($start_x + $width - 1)." $i", $lower_wall_tile);
     }
     
     add_map_comment($map_, $name. ' upper right wall');
     for ($i = $start_x; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i 1", $upper_wall_tile);
+        add_map_element($map_, "$i $start_y", $upper_wall_tile);
     }
     
     add_map_comment($map_, $name. ' lower left wall');
     for ($i = $start_x+1; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i ".FOYER_LENTGH, $lower_wall_tile);
+        add_map_element($map_, "$i ".($start_y + $length - 1), $lower_wall_tile);
     }
 }
 
