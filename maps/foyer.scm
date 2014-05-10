@@ -1,6 +1,6 @@
 `(0 (
 	;;hero
-	(HERO 0 9 17 0 0 ((unquote (cons (quote NIDERITE) 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action)) ;; !
+	(HERO 0 9 17 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(70 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action))
 	;;foyer upper left wall
 	(WALL_U1:2 0 1 2 0 0 () "a wall" ,WALL_U (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WALL_U1:3 0 1 3 0 0 () "a wall" ,WALL_U (unquote id-step) (unquote id-collision) (unquote id-action))
@@ -66,11 +66,11 @@
 	(FLOOR_315:18 0 15 18 0 0 () "a wall" ,FLOOR_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(FLOOR_316:18 0 16 18 0 0 () "a wall" ,FLOOR_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;boss door
-	(DOOR_CLOSED_V_R8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_V_R9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_L8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_R9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;front door
-	(DOOR_CLOSED_V_R8:18 0 8 18 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_V_R9:18 0 9 18 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_OPEN_H_L8:18 0 8 18 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_OPEN_H_R9:18 0 9 18 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 

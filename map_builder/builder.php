@@ -201,12 +201,11 @@ function add_rectangle_to_map(
     }
 }
 
-function add_hero(&$map_, $coordinates) {
+function add_hero(&$map_, $coordinates) {   
     $map_[] = INDENT."(HERO 0 "
         . $coordinates
-        . " 0 0 ((unquote (cons (quote NIDERITE) 0))) \"the hero\" ,"
-            .HERO_TILE. " (unquote hero-step) "
-            . "(unquote id-collision) (unquote hero-action)) ;; !";
+        . " 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(70 0))) \"the hero\" ,"
+            .HERO_TILE. " (unquote hero-step) (unquote id-collision) (unquote hero-action))";
 }
 
 function save_to_file($name, $content) {
