@@ -154,12 +154,12 @@
 	(WINDOW_V_DARK_31:56 0 1 56 0 0 () "a window" ,WINDOW_V_DARK_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WINDOW_V_DARK_31:59 0 1 59 0 0 () "a window" ,WINDOW_V_DARK_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WINDOW_V_DARK_31:60 0 1 60 0 0 () "a window" ,WINDOW_V_DARK_3 (unquote id-step) (unquote id-collision) (unquote id-action))
-	;;door in
-	(DOOR_OPEN_H_L7:1 0 7 1 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_OPEN_H_R8:1 0 8 1 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;door out
-	(DOOR_CLOSED_H_L7:64 0 7 64 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_H_R8:64 0 8 64 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_L7:1 0 7 1 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_R8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	;;door in
+	(DOOR_OPEN_H_L7:64 0 7 64 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_OPEN_H_R8:64 0 8 64 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 

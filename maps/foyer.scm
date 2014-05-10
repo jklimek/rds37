@@ -66,11 +66,11 @@
 	(FLOOR_315:18 0 15 18 0 0 () "a wall" ,FLOOR_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(FLOOR_316:18 0 16 18 0 0 () "a wall" ,FLOOR_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;boss door
-	(DOOR_CLOSED_V_R8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_V_R9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_L8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_R9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;front door
-	(DOOR_CLOSED_V_R8:18 0 8 18 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_V_R9:18 0 9 18 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_OPEN_H_L8:18 0 8 18 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_OPEN_H_R9:18 0 9 18 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 
