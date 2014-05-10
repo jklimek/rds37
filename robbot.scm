@@ -508,26 +508,26 @@
 (set-screen-size! 640 480)
 
 (define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
-				   ,(load-image "robbot-art/crate.png") ; 1
+				   ,(load-image "robbot-art/Lwall.png") ; 1
 				   ,(load-image "robbot-art/Uwall.png") ; 2
 				   ,(load-image "robbot-art/Lwall.png") ; 3
-				   ,(load-image "robbot-art/b5.png") ; 4
-				   ,(load-image "robbot-art/b02.png") ; 5
-				   ,(load-image "robbot-art/b7.png") ; 6
-				   ,(load-image "robbot-art/key.png") ; 7
-				   ,(load-image "robbot-art/b3.png") ; 8
+				   ,(load-image "robbot-art/Lwall.png") ; 4
+				   ,(load-image "robbot-art/Lwall.png") ; 5
+				   ,(load-image "robbot-art/Lwall.png") ; 6
+				   ,(load-image "robbot-art/Lwall.png") ; 7
+				   ,(load-image "robbot-art/Lwall.png") ; 8
 				   ,(load-image "robbot-art/floor.png") ; 9 floor
-				   ,(load-image "robbot-art/floor_dark.png") ; 10 floor_dark
-				   ,(load-image "robbot-art/floor_a_1.png") ; 11
-				   ,(load-image "robbot-art/floor_b_1.png") ; 12
-				   ,(load-image "robbot-art/floor_a_2.png") ; 13
-				   ,(load-image "robbot-art/floor_b_2.png") ; 14
-				   ,(load-image "robbot-art/floor_a_3.png") ; 15
-				   ,(load-image "robbot-art/floor_b_3.png") ; 16
-				   ,(load-image "robbot-art/floor_a_4.png") ; 17
-				   ,(load-image "robbot-art/floor_b_4.png") ; 18
-				   ,(load-image "robbot-art/floor_a_5.png") ; 19
-				   ,(load-image "robbot-art/floor_b_5.png") ; 20
+				   ,(load-image "robbot-art/floor_3.png") ; 10 floor_dark
+				   ,(load-image "robbot-art/floor_1.png") ; 11
+				   ,(load-image "robbot-art/floor_1.png") ; 12
+				   ,(load-image "robbot-art/floor_2.png") ; 13
+				   ,(load-image "robbot-art/floor_2.png") ; 14
+				   ,(load-image "robbot-art/floor_3.png") ; 15
+				   ,(load-image "robbot-art/floor_3.png") ; 16
+				   ,(load-image "robbot-art/floor_4.png") ; 17
+				   ,(load-image "robbot-art/floor_4.png") ; 18
+				   ,(load-image "robbot-art/floor_5.png") ; 19
+				   ,(load-image "robbot-art/floor_5.png") ; 20
 				   )))
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
