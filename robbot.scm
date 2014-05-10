@@ -177,6 +177,7 @@
 			  (if something?
 			       ((O:on-action something?) something? object world)
 			       (T:identity world))))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; gotowe? teraz troszkę magii posiłkowej dla predykatów (odpytwań do świata):
 
@@ -514,28 +515,50 @@
 (set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
 
-(define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek_h_f.png") ; 0
-				   ,(load-image "robbot-art/Lwall.png") ; 1
-				   ,(load-image "robbot-art/Uwall.png") ; 2
-				   ,(load-image "robbot-art/Lwall.png") ; 3
-				   ,(load-image "robbot-art/Lwall.png") ; 4
-				   ,(load-image "robbot-art/Lwall.png") ; 5
-				   ,(load-image "robbot-art/Lwall.png") ; 6
-				   ,(load-image "robbot-art/Lwall.png") ; 7
-				   ,(load-image "robbot-art/Lwall.png") ; 8
-				   ,(load-image "robbot-art/floor.png") ; 9 floor
-				   ,(load-image "robbot-art/floor_3.png") ; 10 floor_dark
-				   ,(load-image "robbot-art/floor_1.png") ; 11
-				   ,(load-image "robbot-art/floor_1.png") ; 12
-				   ,(load-image "robbot-art/floor_2.png") ; 13
-				   ,(load-image "robbot-art/floor_2.png") ; 14
-				   ,(load-image "robbot-art/floor_3.png") ; 15
-				   ,(load-image "robbot-art/floor_3.png") ; 16
-				   ,(load-image "robbot-art/floor_4.png") ; 17
-				   ,(load-image "robbot-art/floor_4.png") ; 18
-				   ,(load-image "robbot-art/floor_5.png") ; 19
-				   ,(load-image "robbot-art/floor_5.png") ; 20
-				   )))
+
+(define-macro (mk-sprites l)
+  (let loop ((pend (reverse l))
+	     (names '())
+	     (loads '()))
+    (if (not (null? pend))
+	(loop (cdr pend)
+	      (cons (car (car pend)) names)
+	      (cons `(load-image ,(cadr (car pend))) loads))
+	;;; !
+	`(begin .
+		,(append (map (lambda (name nr)
+				`(define ,name ,nr))
+			      names (iota (length names)))
+			 `((define *sprites* (list->array 1 (list . ,loads)))))))))
+
+(mk-sprites ((DOOR_CLOSED_H_L "robbot-art/door_closed_h_l.png")
+	     (DOOR_CLOSED_H_R "robbot-art/door_closed_h_r.png")
+	     (DOOR_CLOSED_V_L "robbot-art/door_closed_v_l.png")
+	     (DOOR_CLOSED_V_R "robbot-art/door_closed_v_r.png")
+	     (DOOR_OPEN_H_L "robbot-art/door_open_h_l.png")
+	     (DOOR_OPEN_H_R "robbot-art/door_open_h_r.png")
+	     (DOOR_OPEN_V_L "robbot-art/door_open_v_l.png")
+	     (DOOR_OPEN_V_R "robbot-art/door_open_v_r.png")
+	     (FLOOR_1 "robbot-art/floor_1.png")
+	     (FLOOR_2 "robbot-art/floor_2.png")
+	     (FLOOR_3 "robbot-art/floor_3.png")
+	     (FLOOR_4 "robbot-art/floor_4.png")
+	     (FLOOR_5 "robbot-art/floor_5.png")
+	     (LUDEK_H_B "robbot-art/ludek_h_b.png")
+	     (LUDEK_H_F "robbot-art/ludek_h_f.png")
+	     (LUDEK_V_B "robbot-art/ludek_v_b.png")
+	     (LUDEK_V_F "robbot-art/ludek_v_f.png")
+	     (LWALL "robbot-art/Lwall.png")
+	     (TORCH_1 "robbot-art/torch_1.png")
+	     (TORCH_2 "robbot-art/torch_2.png")
+	     (WALL_U "robbot-art/wall_u.png")
+	     (WINDOW_V_DARK_1 "robbot-art/window_v_dark_1.png")
+	     (WINDOW_V_DARK_2 "robbot-art/window_v_dark_2.png")
+	     (WINDOW_V_DARK_3 "robbot-art/window_v_dark_3.png")
+	     (WINDOW_V_LIT_1 "robbot-art/window_v_lit_1.png")
+	     (WINDOW_V_LIT_2 "robbot-art/window_v_lit_2.png")
+	     (WINDOW_V_LIT_3 "robbot-art/window_v_lit_3.png")))
+
 
 (define *font* (load-font "robbot-art/VeraMono.ttf" 11))
 
@@ -617,7 +640,7 @@
 				      (disp-y
 				       (+ top-y
 					  (* tile-half-height (+ map-x map-y)))))
-				 `(,(to-int disp-x) ,(to-int disp-y) ,sprite-index))))
+				 `(,(to-int disp-x) ,(to-int disp-y) ,(- sprite-index 3)))))
 		floors)
 	   ;;; obiekty:
 	   (map (match-lambda ((id sector map-x map-y dx dy state name sprite-index . _)
@@ -669,7 +692,7 @@
     (include "maps/hallway.scm")
    )))
 
-(add-timer! 123
+(add-timer! 80
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 	      (match *general-game-state*
