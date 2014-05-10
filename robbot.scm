@@ -514,7 +514,7 @@
 (set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
 
-(define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek.png") ; 0
+(define *sprites* (list->array 1 `(,(load-image "robbot-art/ludek_h_f.png") ; 0
 				   ,(load-image "robbot-art/Lwall.png") ; 1
 				   ,(load-image "robbot-art/Uwall.png") ; 2
 				   ,(load-image "robbot-art/Lwall.png") ; 3
