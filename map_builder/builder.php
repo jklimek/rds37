@@ -25,6 +25,8 @@ define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
 define ('HORIZONTAL_DOOR_TILE_L', 'DOOR_CLOSED_V_R');
 define ('HORIZONTAL_DOOR_TILE_R_MINI', 'DOOR_CLOSED_V_R_MINI');
 define ('HORIZONTAL_DOOR_TILE_L_MINI', 'DOOR_CLOSED_V_R_MINI');
+define ('VERTICAL_DOOR_TILE_R_MINI', 'DOOR_CLOSED_V_R');
+define ('VERTICAL_DOOR_TILE_L_MINI', 'DOOR_CLOSED_V_L');
 define ('DOOR_NAME', 'a door');
 define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
 define ('WINDOW_NAME', 'a window');
@@ -129,7 +131,27 @@ function overlay_shadow(&$floor_, $shadow_, $shift_) {
     foreach ($shadow_ as $tile_) {
         $x = ($tile_[0] + $shift_[0]) % HALLWAY_WIDTH;
         $y = ($tile_[1] + $shift_[1]) % HALLWAY_LENTGH;
-        if (isset($floor_[$x.' '.$y]) && strpos($floor_[$x.' '.$y], 'FLOOR_1') === false) {
+        if (
+            isset($floor_[$x.' '.$y]) && strpos($floor_[$x.' '.$y], 'FLOOR_1') === false
+                && !in_array([$x, $y],
+                        [
+                            [HALLWAY_WIDTH-1, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-2, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-3, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-4, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-5, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-6, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-7, HALLWAY_LENTGH-1],
+                            [HALLWAY_WIDTH-1, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-2, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-3, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-4, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-5, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-6, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-7, HALLWAY_LENTGH-2],
+                        ]
+                    )
+        ) {
             add_floor_element($floor_, $x.' '.$y, eval_floor_tile_version($tile_['val']));
         }
     }
@@ -182,6 +204,10 @@ function build_foyer_constructions() {
     add_map_comment($map_, 'front door');
     add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, FOYER_ID);
     add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME, FOYER_ID);
+    
+    add_map_comment($map_, 'side door');
+    add_map_element($map_, '1'." ".(FOYER_LENTGH/2), 'DOOR_CLOSED_V_R', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, '1'." ".(FOYER_LENTGH/2+1), 'DOOR_CLOSED_V_L', DOOR_NAME, FOYER_ID);
     
     add_map_comment($map_, 'TORCHES');
     add_map_element($map_, "2 2 ", 'TORCH_1', TORCH_NAME, FOYER_ID);
