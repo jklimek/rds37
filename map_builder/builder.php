@@ -23,12 +23,18 @@ define ('LOWER_WALL_TILE', 'WALL_LL');
 define ('WALL_NAME', 'a wall');
 define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
 define ('HORIZONTAL_DOOR_TILE_L', 'DOOR_CLOSED_V_R');
+define ('HORIZONTAL_DOOR_TILE_R_MINI', 'DOOR_CLOSED_V_R_MINI');
+define ('HORIZONTAL_DOOR_TILE_L_MINI', 'DOOR_CLOSED_V_R_MINI');
 define ('DOOR_NAME', 'a door');
 define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
 define ('WINDOW_NAME', 'a window');
+define ('TORCH_TILE_1', 'TORCH_1');
+define ('TORCH_TILE_2', 'TORCH_2');
+define ('TORCH_NAME', 'a torch');
 
 define('FOYER_ID', '0');
 define('HALLWAY_ID', '1');
+define('BOSS_ROOM_ID', '2');
 
 define('HERO_TILE', 'LUDEK_H_B');
 
@@ -170,28 +176,40 @@ function build_foyer_constructions() {
         UPPER_WALL_TILE_LOW, FOYER_ID);
     
     add_map_comment($map_, 'boss door');
-    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME, FOYER_ID);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID);
     
     add_map_comment($map_, 'front door');
     add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, FOYER_ID);
     add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME, FOYER_ID);
     
-//    add_map_comment($map_, 'stairs');
-//    for ($i=2; $i<=3; $i++) {
-//        for ($j=2; $j<=6; $j++) {
-//            add_map_element($map_, "$i $j", 'stair-wall');
-//        }
-//    }
-//    add_map_element($map_, "2 7", 'stair3');
-//    add_map_element($map_, "3 7", 'stair3');
-//    add_map_element($map_, "2 8", 'stair2');
-//    add_map_element($map_, "3 8", 'stair2');
-//    add_map_element($map_, "2 9", 'stair1');
-//    add_map_element($map_, "3 9", 'stair1');
+    add_map_comment($map_, 'TORCHES');
+    add_map_element($map_, "2 2 ", 'TORCH_1', TORCH_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH-1)." 2 ", 'TORCH_2', TORCH_NAME, FOYER_ID);
+    add_map_element($map_, "2 ".(FOYER_LENTGH-1), 'TORCH_1', TORCH_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH-1)." ".(FOYER_LENTGH-1), 'TORCH_2', TORCH_NAME, FOYER_ID);
         
     $map = implode("\n", $map_);
     return $map;
+}
+
+function build_boss_room() {
+    $map = "`(".BOSS_ROOM_ID." (\n";
+    $map .= build_boss_room_constructions();
+    $map .= "\n".INDENT.")\n";
+    $map .= build_boss_room_floor();
+    $map .= "\n".INDENT.";(ile do nastepnego)\n";
+    $map .= INDENT."1"
+        . "\n)";
+    save_to_file('boss', $map);
+}
+
+function build_boss_room_constructions() {
+    
+}
+
+function build_boss_room_floor() {
+    
 }
 
 function add_rectangle_to_map(
