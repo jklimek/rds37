@@ -213,14 +213,14 @@ function build_foyer_constructions() {
         UPPER_WALL_TILE_LOW, FOYER_ID);
     
     add_map_comment($map_, 'boss door');
-//    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID,
-//        ',(mk-door-collision 2 7 7)');
-//    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID,
-//        ',(mk-door-collision 2 7 7)');
     add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID,
-        ',(mk-door-collision 1 7 63)');
+        ',(mk-door-collision 2 7 7)');
     add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID,
-        ',(mk-door-collision 1 7 63)');
+        ',(mk-door-collision 2 7 7)');
+//    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID,
+//        ',(mk-door-collision 1 7 63)');
+//    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID,
+//        ',(mk-door-collision 1 7 63)');
     
     add_map_comment($map_, 'front door');
     add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, FOYER_ID);
