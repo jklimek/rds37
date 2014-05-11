@@ -31,7 +31,7 @@ define ('HORIZONTAL_DOOR_TILE_L_MINI', 'DOOR_CLOSED_V_R_MINI');
 define ('VERTICAL_DOOR_TILE_R_MINI', 'DOOR_CLOSED_V_R');
 define ('VERTICAL_DOOR_TILE_L_MINI', 'DOOR_CLOSED_V_L');
 define ('DOOR_NAME', 'a door');
-define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
+define ('WINDOW_TILE', 'WINDOW_V_DARK_3_A');
 define ('WINDOW_NAME', 'a window');
 define ('TORCH_TILE_1', 'TORCH_1');
 define ('TORCH_TILE_2', 'TORCH_2');
@@ -68,9 +68,11 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
             UPPER_WALL_TILE_HIGH, HALLWAY_ID);
     
     add_map_comment($map_, 'upper left windows I level');
+    $counter = 0;
     for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
         foreach ($window_tiles_ as $key=>$tile_name) {
-            add_map_element($map_, "1 ".($i+$key), WINDOW_TILE, WINDOW_NAME, HALLWAY_ID);
+            add_map_element($map_, "1 ".($i+$key), WINDOW_TILE.($counter%3+1), WINDOW_NAME, HALLWAY_ID);
+            $counter++;
         }
         $i += count($window_tiles_); 
     }
@@ -88,8 +90,9 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
         HALLWAY_ID, ',(mk-door-collision 0 9 2)');
     
     add_map_comment($map_, 'torch');
-    add_map_element($map_, (HALLWAY_WIDTH-4)." ".(HALLWAY_LENTGH-1), 'TORCH_1', TORCH_NAME, FOYER_ID,
+    add_map_element($map_, (HALLWAY_WIDTH-4)." ".(HALLWAY_LENTGH-1), 'TORCH_1', TORCH_NAME, HALLWAY_ID,
             '(unquote id-collision)', 'torch-step');
+
     $map = implode("\n", $map_);
     return $map;
 }
