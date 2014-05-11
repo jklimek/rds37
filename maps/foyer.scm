@@ -72,9 +72,9 @@
 	(DOOR_OPEN_H_L8:18 0 8 18 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	(DOOR_OPEN_H_R9:18 0 9 18 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;TORCHES
-	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action))
+	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
 	(TORCH_215:17 0 15 17 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action))
 	)
 

@@ -220,6 +220,16 @@
 
 (define id-step (lambda (x s) s))
 
+(define torch-step (lambda (self w) 
+		     (let ((new-sprite-id (if (eq? (O:sprite-id self) TORCH_1)
+					     TORCH_2
+					     TORCH_1)))
+		       ((T:update<o> `(,(O:id self)
+				       ,(O:sector self) ,(O:x self) ,(O:y self)
+				       ,(O:dx self)  ,(O:dy self)
+				       ,(O:STATE self) ,(O:name self) ,new-sprite-id
+				       . ,(cdddr (cdddr (cdddr self)))))
+			w))))
 
 (define (hero-step self world)
   (let* ((hero self)
@@ -561,7 +571,7 @@
 #;(define *samples* (list->array 1 `(,(load-sound "pandora-art/click.wav")
 				   ,(load-sound "pandora-art/beep.wav"))))
 
-(set-window-title! "Fear of the dark!")
+(set-window-title! "YOG-SOTHOT 3000")
 (set-screen-size! 640 480)
 
 (define-macro (mk-sprites l)
