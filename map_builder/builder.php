@@ -76,9 +76,13 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME, HALLWAY_ID);
     
     add_map_comment($map_, 'door in');
-    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, HALLWAY_ID);
-    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME, HALLWAY_ID);
+    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME,
+        HALLWAY_ID, ',(mk-door-collision 0 9 2)');
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME,
+        HALLWAY_ID, ',(mk-door-collision 0 9 2)');
     
+    add_map_comment($map_, 'torch');
+    add_map_element($map_, (HALLWAY_WIDTH-4)." ".(HALLWAY_LENTGH-1), 'TORCH_1', TORCH_NAME, FOYER_ID);
     $map = implode("\n", $map_);
     return $map;
 }
@@ -148,7 +152,11 @@ function overlay_shadow(&$floor_, $shadow_, $shift_) {
                             [HALLWAY_WIDTH-4, HALLWAY_LENTGH-2],
                             [HALLWAY_WIDTH-5, HALLWAY_LENTGH-2],
                             [HALLWAY_WIDTH-6, HALLWAY_LENTGH-2],
-                            [HALLWAY_WIDTH-7, HALLWAY_LENTGH-2],
+                            [HALLWAY_WIDTH-1, HALLWAY_LENTGH-3],
+                            [HALLWAY_WIDTH-2, HALLWAY_LENTGH-3],
+                            [HALLWAY_WIDTH-3, HALLWAY_LENTGH-3],
+                            [HALLWAY_WIDTH-4, HALLWAY_LENTGH-3],
+                            [HALLWAY_WIDTH-5, HALLWAY_LENTGH-3],
                         ]
                     )
         ) {
@@ -198,8 +206,10 @@ function build_foyer_constructions() {
         UPPER_WALL_TILE_LOW, FOYER_ID);
     
     add_map_comment($map_, 'boss door');
-    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L_MINI', DOOR_NAME, FOYER_ID,
+        ',(mk-door-collision 1 7 63)');
+    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R_MINI', DOOR_NAME, FOYER_ID,
+        ',(mk-door-collision 1 7 63)');
     
     add_map_comment($map_, 'front door');
     add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, FOYER_ID);
@@ -291,7 +301,9 @@ function add_floor_element(&$map_, $coordinates, $floor_type) {
     $map_[$coordinates] = "($coordinates ,$floor_type)";
 }
 
-function add_map_element(&$map_, $coordinates, $file_name, $object_type, $location_id) {
+function add_map_element(&$map_, $coordinates, $file_name, $object_type, $location_id,
+    $collision = '(unquote id-collision)'
+){
     if (LOUD) {
         echo($coordinates.NL);
     }
@@ -299,7 +311,7 @@ function add_map_element(&$map_, $coordinates, $file_name, $object_type, $locati
     $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
         INDENT.'('.$file_name.'\1:\2 '.$location_id.' \1 \2 0 0 () "'.$object_type
-            .'" ,'.$file_name.' (unquote id-step) (unquote id-collision) (unquote id-action))',
+            .'" ,'.$file_name.' (unquote id-step) '.$collision.' (unquote id-action))',
         $coordinates
     );
 }

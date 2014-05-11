@@ -64,8 +64,8 @@
 	(WALL_LL15:18 0 15 18 0 0 () "a wall" ,WALL_LL (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WALL_LL16:18 0 16 18 0 0 () "a wall" ,WALL_LL (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;boss door
-	(DOOR_CLOSED_H_L_MINI8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_H_L_MINI (unquote id-step) (unquote id-collision) (unquote id-action))
-	(DOOR_CLOSED_H_R_MINI9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_H_R_MINI (unquote id-step) (unquote id-collision) (unquote id-action))
+	(DOOR_CLOSED_H_L_MINI8:1 0 8 1 0 0 () "a door" ,DOOR_CLOSED_H_L_MINI (unquote id-step) ,(mk-door-collision 1 7 63) (unquote id-action))
+	(DOOR_CLOSED_H_R_MINI9:1 0 9 1 0 0 () "a door" ,DOOR_CLOSED_H_R_MINI (unquote id-step) ,(mk-door-collision 1 7 63) (unquote id-action))
 	;;front door
 	(DOOR_OPEN_H_L8:18 0 8 18 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	(DOOR_OPEN_H_R9:18 0 9 18 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) (unquote id-collision) (unquote id-action))
@@ -73,9 +73,9 @@
 	(DOOR_CLOSED_V_R1:9 0 1 9 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	(DOOR_CLOSED_V_L1:10 0 1 10 0 0 () "a door" ,DOOR_CLOSED_V_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;TORCHES
-	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
+	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(TORCH_215:17 0 15 17 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action))
 	)
 
