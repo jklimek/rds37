@@ -235,9 +235,9 @@
 (define window-step (lambda (self w) 
 		     (let* ((sprite-id (O:sprite-id self))
 			    (new-sprite-id
-			     (cond ((eq? sprite-id WINDOW_V_DARK_1) WINDOW_V_DARK_2)
-				   ((eq? sprite-id WINDOW_V_DARK_2) WINDOW_V_DARK_3)
-				   ((eq? sprite-id WINDOW_V_DARK_3) WINDOW_V_DARK_1))))
+			     (cond ((eq? sprite-id WINDOW_V_DARK_3_A1) WINDOW_V_DARK_3_A2)
+				   ((eq? sprite-id WINDOW_V_DARK_3_A2) WINDOW_V_DARK_3_A3)
+				   ((eq? sprite-id WINDOW_V_DARK_3_A3) WINDOW_V_DARK_3_A1))))
 		       ((T:update<o> `(,(O:id self)
 				       ,(O:sector self) ,(O:x self) ,(O:y self)
 				       ,(O:dx self)  ,(O:dy self)
@@ -600,7 +600,7 @@
 
 (play-music! *music*)
 
-(set-window-title! "YOG-SOTHOT 3000")
+(set-window-title! "YOG-SOTHOTH 3000")
 (set-screen-size! 640 480)
 
 (define-macro (mk-sprites l)
