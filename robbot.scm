@@ -231,6 +231,21 @@
 				       . ,(cdddr (cdddr (cdddr self)))))
 			w))))
 
+
+(define window-step (lambda (self w) 
+		     (let* ((sprite-id (O:sprite-id self))
+			    (new-sprite-id
+			     (cond ((eq? sprite-id WINDOW_V_DARK_1) WINDOW_V_DARK_2)
+				   ((eq? sprite-id WINDOW_V_DARK_2) WINDOW_V_DARK_3)
+				   ((eq? sprite-id WINDOW_V_DARK_3) WINDOW_V_DARK_1))))
+		       ((T:update<o> `(,(O:id self)
+				       ,(O:sector self) ,(O:x self) ,(O:y self)
+				       ,(O:dx self)  ,(O:dy self)
+				       ,(O:STATE self) ,(O:name self) ,new-sprite-id
+				       . ,(cdddr (cdddr (cdddr self)))))
+			w))))
+
+
 (define (hero-step self world)
   (let* ((hero self)
 	 (hero-x (O:x hero))
