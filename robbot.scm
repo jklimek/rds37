@@ -222,6 +222,7 @@
 
 (define (hero-step self world)
 ; (write *joystick*) (newline)
+  (set! *joy-read?* #t) ;;; bleeeeee!
   ((match *joystick*
      ('0 T:identity)
      ('N (try-walk self 0 -1))
@@ -488,11 +489,11 @@
 	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
 				  (F:tiles cur-floor))))
 	 (hero-floor-shade (caddr hero-floor))
-	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -13)
-					((eq? hero-floor-shade FLOOR_2) -6)
-					((eq? hero-floor-shade FLOOR_3) 0)
-					((eq? hero-floor-shade FLOOR_4) 3)
-					((eq? hero-floor-shade FLOOR_5) 5)))
+	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
+					((eq? hero-floor-shade FLOOR_2) -3)
+					((eq? hero-floor-shade FLOOR_3) 2)
+					((eq? hero-floor-shade FLOOR_4) 2)
+					((eq? hero-floor-shade FLOOR_5) 2)))
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
@@ -624,18 +625,19 @@
 ))
 
 (define *joystick* 0)
+(define *joy-read?* #f)
 
-(keydn 'space (lambda () (set! *joystick* 'A)))
-(keydn 'up    (lambda () (set! *joystick* 'N)))
-(keydn 'right (lambda () (set! *joystick* 'E)))
-(keydn 'left  (lambda () (set! *joystick* 'W)))
-(keydn 'down  (lambda () (set! *joystick* 'S)))
+(keydn 'space (lambda () (set! *joystick* 'A) (set! *joy-read?* #f)))
+(keydn 'up    (lambda () (set! *joystick* 'N) (set! *joy-read?* #f)))
+(keydn 'right (lambda () (set! *joystick* 'E) (set! *joy-read?* #f)))
+(keydn 'left  (lambda () (set! *joystick* 'W) (set! *joy-read?* #f)))
+(keydn 'down  (lambda () (set! *joystick* 'S) (set! *joy-read?* #f)))
 
-(keyup 'up    (lambda () (set! *joystick* 0)))
-(keyup 'down  (lambda () (set! *joystick* 0)))
-(keyup 'right (lambda () (set! *joystick* 0)))
-(keyup 'left  (lambda () (set! *joystick* 0)))
-;(keyup 'space (lambda () (set! *joystick* 0)))
+(keyup 'up    (lambda () (if *joy-read?* (set! *joystick* 0))))
+(keyup 'down  (lambda () (if *joy-read?* (set! *joystick* 0))))
+(keyup 'right (lambda () (if *joy-read?* (set! *joystick* 0))))
+(keyup 'left  (lambda () (if *joy-read?* (set! *joystick* 0))))
+(keyup 'space (lambda () (if *joy-read?* (set! *joystick* 0))))
 
 (keydn 'esc quit)
 (keydn 'q quit)
@@ -737,8 +739,8 @@
 		('PLAY
 		 (let ((old-state *state*))
 		   (set-display-procedure! display-world)
-		   (set-to-display! (current-view *state*))
 		   (set! *state* (std-step *state*))
+		   (set-to-display! (current-view *state*))
 
 		   (if (not (find 'HERO *state*))		       
 		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)

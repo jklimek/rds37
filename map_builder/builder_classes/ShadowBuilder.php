@@ -13,20 +13,7 @@ class ShadowBuilder {
         $clouds_ = [];
         switch ($version) {
             case 1:
-                $clouds_ = $this->_merge_shadows(
-                    $this->_shift($this->_build_cloud(1), 10, 1),
-                    $this->_shift($this->_build_cloud(2), 3, 6),
-                    $this->_shift($this->_flip_horizontal($this->_build_cloud(1)), 13, 10),
-//                    $this->_shift($this->_build_cloud(1), 13, 21),
-//                    $this->_shift($this->_build_cloud(1), 1, 25),
-//                    $this->_shift($this->_build_cloud(1), 7, 28)
-//                    $this->_shift($this->_build_cloud(1), 4, 33),
-//                    $this->_shift($this->_build_cloud(1), 2, 39),
-//                    $this->_shift($this->_build_cloud(1), 1, 41),
-//                    $this->_shift($this->_build_cloud(1), 10, 49),
-//                    $this->_shift($this->_build_cloud(1), 5, 57),
-                    $this->_shift($this->_flip_horizontal($this->_build_cloud(1)), 2, 45)
-                );
+                $clouds_ = $this->_load_cloud_map();
                 break;
 
             default:
@@ -35,7 +22,25 @@ class ShadowBuilder {
         return $clouds_;
     }
     
-    private function _merge_shadows() {
+    private function _load_cloud_map() {
+        $clouds_ = [];
+        $file_ = file('builder_classes/clouds.txt', FILE_IGNORE_NEW_LINES);
+        foreach ($file_ as $j => $line) {
+            foreach (str_split($line) as $i => $char) {
+                switch ($char) {
+                    case '+':
+                        $clouds_[] = [$i+1, $j+1, 'val'=>'2'];
+                        break;
+                    case '#':
+                        $clouds_[] = [$i+1, $j+1, 'val'=>'1'];
+                        break;
+                }
+            }
+        }
+        return $clouds_;
+    }
+
+        private function _merge_shadows() {
         $shadows_deep_array_ = [];
         foreach (func_get_args() as $shadows_) {
             foreach($shadows_ as $shadow_){
@@ -101,13 +106,32 @@ class ShadowBuilder {
         
     public function build_pillars($version, $distance) {
         $pilars_ = [];
+        
         for ($i = 1; $i < $this->_length-2; $i+=$distance+1) {
-            $pilars_[] = [2, $i, 'val'=>1];
-            $pilars_[] = [3, $i, 'val'=>1];
-            $pilars_[] = [4, $i, 'val'=>2];
-            $pilars_[] = [2, $i+1, 'val'=>2];
-            $pilars_[] = [3, $i+1, 'val'=>2];
+            $pilars_[] = [2, $i, 'val'=>2];
+            $pilars_[] = [3, $i, 'val'=>2];
+            $pilars_[] = [2, $i+1, 'val'=>1];
+            $pilars_[] = [3, $i+1, 'val'=>1];
+            $pilars_[] = [4, $i+1, 'val'=>2];
+            $pilars_[] = [5, $i+1, 'val'=>2];
+            $pilars_[] = [2, $i+2, 'val'=>2];
+            $pilars_[] = [2, $i+3, 'val'=>2];
         }
+        array_pop($pilars_);
+        array_pop($pilars_);
+//        var_dump($i);
+        $pilars_[] = [2, $this->_length-2, 'val'=>1];
+        $pilars_[] = [3, $this->_length-2, 'val'=>1];
+        $pilars_[] = [4, $this->_length-2, 'val'=>1];
+        $pilars_[] = [5, $this->_length-2, 'val'=>2];
+        $pilars_[] = [6, $this->_length-2, 'val'=>2];
+        $pilars_[] = [2, $this->_length-1, 'val'=>1];
+        $pilars_[] = [3, $this->_length-1, 'val'=>1];
+        $pilars_[] = [4, $this->_length-1, 'val'=>1];
+        $pilars_[] = [5, $this->_length-1, 'val'=>1];
+        $pilars_[] = [6, $this->_length-1, 'val'=>2];
+        $pilars_[] = [7, $this->_length-1, 'val'=>2];
+        
         return $pilars_;
     }
 
