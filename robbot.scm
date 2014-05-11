@@ -399,7 +399,8 @@
 (define mk-teleport-collision
   (lambda (nx ny ndx ndy)
     (lambda (me it world) ;;;; tuu będzie kiedyś ZDARZENIE z komunikatem, dla beki.
-      (mk-message '(("YOU HAVE BEEN TELEPORTED." 180 166)
+      (mk-message '(
+("YOU HAVE BEEN TELEPORTED." 180 166)
 		    ("PRESS FIRE." 180 196))
 		  (T:update<o> `(,(O:id it)
 				 ,(O:sector it) ,nx ,ny
@@ -511,12 +512,15 @@
 				  sec))
 			    (W:sectors ((T:update<o> new-hero) world))))))
 ;    (write (find 'HERO new-world)) (newline)
-    (let loop ((pend objects)
-	       (world new-world))
-      (if (null? pend)
-	  world
-	  (loop (cdr pend)
-		((O:step (car pend)) (car pend) world))))))
+;    (display hero-heartrate) (newline)
+    (if (< hero-heartrate 1)
+	((T:delete<o> hero) new-world) ;; śmirć!
+	(let loop ((pend objects)
+		   (world new-world))
+	  (if (null? pend)
+	      world
+	      (loop (cdr pend)
+		    ((O:step (car pend)) (car pend) world)))))))
 	  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -586,7 +590,7 @@
 	     (WINDOW_V_LIT_3 "robbot-art/window_v_lit_3.png")))
 
 
-(define *font* (load-font "robbot-art/VeraMono.ttf" 11))
+(define *font* (load-font "robbot-art/Minecraftia.ttf" 13))
 
 (define *display* '()) ;; !!
 (define *heartrate-indicator* 50)
@@ -745,33 +749,46 @@
 	      (match *general-game-state*
 
 		('TITLE
-		 (set-display-procedure! display-title)
-		 (if (eq? *joystick* 'A) (set! *general-game-state* 'PLAY))
-		 (set! *joystick* 0))
+		 (begin
+		   (set! *state* (restart-world 'cokolwiek))
+		   (set-display-procedure! display-title)
+		   (if (eq? *joystick* 'A) (set! *general-game-state* 'PLAY))
+		   (set! *joystick* 0)))
+
+		('GAMEOVER
+		 (begin
+		   (set-display-procedure!
+		    (mk-display-messages
+		     '(
+		       ("GAME OVER" 290 90)
+		       ("GAME OVER" 291 90)
+		       ("As the veil of darkness covers everything," 100 112)
+		       ("you fall into abyss of unspeakable fear and despair..." 100 124)
+		       ("And soon the world will follow." 100 136)
+		       ("PRESS FIRE." 100 166))))
+		   (if (eq? *joystick* 'A) (set! *general-game-state* 'TITLE))
+		   (set! *joystick* 0)))
 
 		('PLAY
 		 (let ((old-state *state*))
 		   (set-display-procedure! display-world)
 		   (set! *state* (std-step *state*))
-		   (set-to-display! (current-view *state*))
+		   (if (not (find 'HERO *state*))
+		       (set! *general-game-state* 'GAMEOVER)
+		       (begin
+			 (set-to-display! (current-view *state*))
+			 (if (or *joy-back?*
+				 (eq? *joystick* 'A))
+			     (set! *joystick* 0))
+			 (set! *joy-back?* #f)
 
-		   (if (or *joy-back?* (eq? *joystick* 'A)) (set! *joystick* 0))
-		   (set! *joy-back?* #f)
-;		   (set! *joy-read?* #t) ;;; bleeeeee!
-
-		   (if (not (find 'HERO *state*))		       
-		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)
-				     ("PRESS FIRE." 180 196))
-				   restart-world
-				   #;(T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
-
-		   (if (and *animation-on* (eq? *general-game-state* 'PLAY))
-		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))
+			 (if (and *animation-on* (eq? *general-game-state* 'PLAY))
+			     (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))))
 		   ))
 
 		(('MESSAGE msgs transform)
 		 (begin
-;		   (write 'mesydz!) (newline)
+;		   (write `(mesydz! ,msgs)) (newline)
 		   (set-display-procedure!
 		    (mk-display-messages msgs))
 		   (if (eq? *joystick* 'A)
