@@ -245,8 +245,8 @@
 	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
 				  (F:tiles cur-floor))))
 	 (hero-floor-shade (caddr hero-floor))
-	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -20)
-					((eq? hero-floor-shade FLOOR_2) -10)
+	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) 0)
+					((eq? hero-floor-shade FLOOR_2) 0)
 					((eq? hero-floor-shade FLOOR_3) 2)
 					((eq? hero-floor-shade FLOOR_4) -5)
 					((eq? hero-floor-shade FLOOR_5) -5)))
@@ -773,7 +773,8 @@
 (define (restart-world world)
   `((
      ,(include "maps/foyer.scm")         
-     ,(include "maps/hallway.scm")
+     ,(include "maps/hallway.scm")       
+     ,(include "maps/boss.scm")
      ;; nast sektory...
    )))
 
