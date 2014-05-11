@@ -222,15 +222,40 @@
 
 
 (define (hero-step self world)
-; (write *joystick*) (newline)
-  ((match *joystick*
-     ('0 T:identity)
-     ('N (try-walk self 0 -1))
-     ('E (try-walk self 1 0)) 
-     ('W (try-walk self -1 0))
-     ('S (try-walk self 0 1)) 
-     ('A (try-action self)))
-   world))
+  (let* ((hero self)
+	 (hero-x (O:x hero))
+	 (hero-y (O:y hero))
+	 (hero-state (O:STATE hero))
+	 (hero-heartrate (AL:lookup 'HEARTRATE hero-state))
+	 (sector-id (O:sector hero))
+	 (sector (AL:assoc sector-id (W:sectors world)))
+	 (objects (S:objects sector))
+	 (floors (S:floor-frames sector))
+	 (cur-floor (car floors))
+	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
+				  (F:tiles cur-floor))))
+	 (hero-floor-shade (caddr hero-floor))
+	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
+					((eq? hero-floor-shade FLOOR_2) -6)
+					((eq? hero-floor-shade FLOOR_3) 2)
+					((eq? hero-floor-shade FLOOR_4) -3)
+					((eq? hero-floor-shade FLOOR_5) -3)))
+	 (new-hero `(HERO
+		     ,sector-id ,hero-x ,hero-y
+		     ,(O:dx hero) ,(O:dy hero)
+		     ,(AL:update 'HEARTRATE (+ hero-heartrate hero-floor-shade-effect) hero-state)
+		     . ,(cdddr (cddddr hero))))
+	 (world ((T:update<o> new-hero) world)))
+    (if (< hero-heartrate 1)
+	((T:delete<o> hero) world) ;; śmirć!
+	((match *joystick*
+	   ('0 T:identity)
+	   ('N (try-walk new-hero 0 -1))
+	   ('E (try-walk new-hero 1 0)) 
+	   ('W (try-walk new-hero -1 0))
+	   ('S (try-walk new-hero 0 1)) 
+	   ('A (try-action new-hero)))
+	 world))))
   
 (define (try-walk self dx dy)
   (lambda (world)
@@ -478,28 +503,10 @@
 
 (define (std-step world)
   (let* ((hero (find 'HERO world))
-	 (hero-x (O:x hero))
-	 (hero-y (O:y hero))
-	 (hero-state (O:STATE hero))
-	 (hero-heartrate (AL:lookup 'HEARTRATE hero-state))
 	 (sector-id (O:sector hero))
 	 (sector (AL:assoc sector-id (W:sectors world)))
 	 (objects (S:objects sector))
 	 (floors (S:floor-frames sector))
-	 (cur-floor (car floors))
-	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
-				  (F:tiles cur-floor))))
-	 (hero-floor-shade (caddr hero-floor))
-	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
-					((eq? hero-floor-shade FLOOR_2) -6)
-					((eq? hero-floor-shade FLOOR_3) 2)
-					((eq? hero-floor-shade FLOOR_4) -3)
-					((eq? hero-floor-shade FLOOR_5) -3)))
-	 (new-hero `(HERO
-		     ,sector-id ,hero-x ,hero-y
-		     ,(O:dx hero) ,(O:dy hero)
-		     ,(AL:update 'HEARTRATE (+ hero-heartrate hero-floor-shade-effect) hero-state)
-		     . ,(cdddr (cddddr hero))))
 	 (to-next (S:to-next-floor-frame sector))
 	 (new-world `(,(map (lambda (sec)
 			      (if (eq? (S:id sec) sector-id)
@@ -513,17 +520,14 @@
 					       (new-to-next (F:length new-cur-frame)))
 					  `(,sector-id ,(S:objects sec) ,new-floors ,new-to-next))))
 				  sec))
-			    (W:sectors ((T:update<o> new-hero) world))))))
+			    (W:sectors world)))))
 ;    (write (find 'HERO new-world)) (newline)
-;    (display hero-heartrate) (newline)
-    (if (< hero-heartrate 1)
-	((T:delete<o> hero) new-world) ;; śmirć!
-	(let loop ((pend objects)
-		   (world new-world))
-	  (if (null? pend)
-	      world
-	      (loop (cdr pend)
-		    ((O:step (car pend)) (car pend) world)))))))
+    (let loop ((pend objects)
+	       (world new-world))
+      (if (null? pend)
+	  world
+	  (loop (cdr pend)
+		((O:step (car pend)) (car pend) world))))))
 	  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
