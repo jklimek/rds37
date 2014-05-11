@@ -367,7 +367,7 @@
 		   
 (define (mk-door-collision s x y)
   (lambda (me it world)
-;    (write `(door-col ,it ,s ,x ,y)) (newline)
+    (write `(door-col ,it ,s ,x ,y)) (newline)
     ((T:insert<o> `(,(O:id it) ,s ,x ,y . ,(cddddr it)))
      ((T:delete<o> it) world))))
 
@@ -431,8 +431,8 @@
   (lambda (me it world) ;;;; tuu będzie kiedyś ZDARZENIE z komunikatem, dla beki.
     (begin
 ;      (write `(pick ,me ,it)) (newline)
-      (mk-message '(("WELL DONE, YOU FOUND A SAMPLE OF NIDERITE!" 180 166)
-		    ("PRESS FIRE." 180 196))
+      (mk-message `((,(string-append "You have picked " (O:name me) ".") 180 166)
+		    ("PRESS FIRE." 286 440))
 		  (cmp (T:update<o> `(,(O:id it)
 				      ,(O:sector it) ,(O:x it) ,(O:y it)
 				      ,(O:dx it) ,(O:dy it)
@@ -623,7 +623,10 @@
 	     (WINDOW_V_DARK_3 "robbot-art/window_v_dark_3.png")
 	     (WINDOW_V_LIT_1 "robbot-art/window_v_lit_1.png")
 	     (WINDOW_V_LIT_2 "robbot-art/window_v_lit_2.png")
-	     (WINDOW_V_LIT_3 "robbot-art/window_v_lit_3.png")))
+	     (WINDOW_V_LIT_3 "robbot-art/window_v_lit_3.png")
+	     (CRATE "robbot-art/crate.png")
+	     (KEY "robbot-art/key.png")
+	     ))
 
 
 (define *font* (load-font "robbot-art/Minecraftia.ttf" 13))
@@ -774,6 +777,7 @@
   `((
      ,(include "maps/foyer.scm")         
      ,(include "maps/hallway.scm")
+     ,(include "maps/smallroom.scm")
      ;; nast sektory...
    )))
 
