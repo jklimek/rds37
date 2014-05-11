@@ -5,11 +5,12 @@
 	     (slayer font)
 	     (extra common))
 
+
+(define *title-img* (load-image "robbot-art/splash.png")) ;; ?!
+
 (use-modules (ice-9 match)) ;;; tylko dla gejzerka...
 
 (define *animation-on* #f)
-
-(define *general-game-state* 'PLAY) ;; TITLE HIGHSCORE MESSAGE ANIMATION GAMEOVER ...?
 
 ;;; brudne komunikaty:
 (define (mk-message msgs transform)  
@@ -401,7 +402,8 @@
 (define mk-teleport-collision
   (lambda (nx ny ndx ndy)
     (lambda (me it world) ;;;; tuu będzie kiedyś ZDARZENIE z komunikatem, dla beki.
-      (mk-message '(("YOU HAVE BEEN TELEPORTED." 180 166)
+      (mk-message '(
+("YOU HAVE BEEN TELEPORTED." 180 166)
 		    ("PRESS FIRE." 180 196))
 		  (T:update<o> `(,(O:id it)
 				 ,(O:sector it) ,nx ,ny
@@ -489,10 +491,10 @@
 				  (F:tiles cur-floor))))
 	 (hero-floor-shade (caddr hero-floor))
 	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
-					((eq? hero-floor-shade FLOOR_2) -3)
+					((eq? hero-floor-shade FLOOR_2) -6)
 					((eq? hero-floor-shade FLOOR_3) 2)
-					((eq? hero-floor-shade FLOOR_4) 2)
-					((eq? hero-floor-shade FLOOR_5) 2)))
+					((eq? hero-floor-shade FLOOR_4) -3)
+					((eq? hero-floor-shade FLOOR_5) -3)))
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
@@ -513,12 +515,15 @@
 				  sec))
 			    (W:sectors ((T:update<o> new-hero) world))))))
 ;    (write (find 'HERO new-world)) (newline)
-    (let loop ((pend objects)
-	       (world new-world))
-      (if (null? pend)
-	  world
-	  (loop (cdr pend)
-		((O:step (car pend)) (car pend) world))))))
+;    (display hero-heartrate) (newline)
+    (if (< hero-heartrate 1)
+	((T:delete<o> hero) new-world) ;; śmirć!
+	(let loop ((pend objects)
+		   (world new-world))
+	  (if (null? pend)
+	      world
+	      (loop (cdr pend)
+		    ((O:step (car pend)) (car pend) world)))))))
 	  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -541,7 +546,6 @@
 
 (set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
-
 
 (define-macro (mk-sprites l)
   (let loop ((pend (reverse l))
@@ -588,7 +592,8 @@
 	     (WINDOW_V_LIT_3 "robbot-art/window_v_lit_3.png")))
 
 
-(define *font* (load-font "robbot-art/VeraMono.ttf" 11))
+(define *font* (load-font "robbot-art/Minecraftia.ttf" 13))
+(define *font-small* (load-font "robbot-art/Minecraftia.ttf" 9))
 
 (define *display* '()) ;; !!
 (define *heartrate-indicator* 50)
@@ -604,8 +609,10 @@
 	      msgs)))
 
 
+(define *sanity-const* (render-text "Sanity" *font-small*))
+
 (define (mk-bar-image)
-  (rectangle (max 0 (min 600 (to-int (* (+ *heartrate-indicator* (random 4)) 3)))) 8 #xAA0000))
+  (rectangle (max 0 (min 580 (to-int (* (+ *heartrate-indicator* (random 4)) 3)))) 8 #xFFFFFF))
 
 (define display-world
  (lambda()
@@ -621,8 +628,11 @@
 			      (< y1 545))
 			 (draw-image! sprite x y1)))))
     *display*)
-   (draw-image! (mk-bar-image) 33 460)
+   (draw-image! *sanity-const* 10 456)
+   (draw-image! (mk-bar-image) 54 460)
 ))
+
+(define display-title (lambda () (draw-image! *title-img* 0 0)))
 
 (define *joystick* 0)
 ;(define *joy-read?* #f)
@@ -725,11 +735,16 @@
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; uh!
 (define (restart-world world)
   `((
-     ,(include "maps/foyer.scm")
+     ,(include "maps/hallway.scm")
+     ;; nast sektory...
    )))
 
+
+
+(define *general-game-state* 'TITLE)
 
 (define *state* (restart-world 'cokolwiek))
 
@@ -738,35 +753,56 @@
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 ;(write `(back ,*joy-back?* ,*joystick*)) (newline)
 	      (match *general-game-state*
+
+		('TITLE
+		 (begin
+		   (set-display-procedure! display-title)
+		   (if (eq? *joystick* 'A)
+		       (begin (set! *general-game-state* 'PLAY)
+			      (set! *state* (restart-world 'cokolwiek)))
+		   (set! *joystick* 0))))
+
+		('GAMEOVER
+		 (begin
+		   (set-display-procedure!
+		    (mk-display-messages
+		     '(
+		       ("GAME OVER" 290 200)
+		       ("GAME OVER" 291 200)
+		       ("As the veil of darkness covers everything," 100 222)
+		       ("you fall into abyss of unspeakable fear and despair..." 100 234)
+		       ("And soon the world will follow." 100 258)
+		       ("PRESS FIRE." 285 410))))
+		   (if (eq? *joystick* 'A) (set! *general-game-state* 'TITLE))
+		   (set! *joystick* 0)))
+
 		('PLAY
 		 (let ((old-state *state*))
 		   (set-display-procedure! display-world)
 		   (set! *state* (std-step *state*))
-		   (set-to-display! (current-view *state*))
+		   (if (not (find 'HERO *state*))
+		       (set! *general-game-state* 'GAMEOVER)
+		       (begin
+			 (set-to-display! (current-view *state*))
+			 (if (or *joy-back?*
+				 (eq? *joystick* 'A))
+			     (set! *joystick* 0))
+			 (set! *joy-back?* #f)
 
-		   (if (or *joy-back?* (eq? *joystick* 'A)) (set! *joystick* 0))
-		   (set! *joy-back?* #f)
-;		   (set! *joy-read?* #t) ;;; bleeeeee!
-
-		   (if (not (find 'HERO *state*))		       
-		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)
-				     ("PRESS FIRE." 180 196))
-				   restart-world
-				   #;(T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
-
-		   (if (and *animation-on* (eq? *general-game-state* 'PLAY))
-		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))
+			 (if (and *animation-on* (eq? *general-game-state* 'PLAY))
+			     (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))))
 		   ))
 
 		(('MESSAGE msgs transform)
 		 (begin
-;		   (write 'mesydz!) (newline)
+;		   (write `(mesydz! ,msgs)) (newline)
 		   (set-display-procedure!
 		    (mk-display-messages msgs))
 		   (if (eq? *joystick* 'A)
 		       (begin (set! *state* (transform *state*))
 			      (set! *general-game-state* 'PLAY)))
 		   (set! *joystick* 0)))
+
 		(('ANIMATE old new step)
 		 (let ((max-steps 1.0))
 		   (set-display-procedure! display-world)
