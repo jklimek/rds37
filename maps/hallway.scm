@@ -159,7 +159,7 @@
 	(DOOR_OPEN_H_L7:64 1 7 64 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) ,(mk-door-collision 0 9 2) (unquote id-action))
 	(DOOR_OPEN_H_R8:64 1 8 64 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) ,(mk-door-collision 0 9 2) (unquote id-action))
 	;;torch
-	(TORCH_110:63 0 10 63 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
+	(TORCH_110:63 1 10 63 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 

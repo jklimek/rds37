@@ -90,8 +90,9 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
         HALLWAY_ID, ',(mk-door-collision 0 9 2)');
     
     add_map_comment($map_, 'torch');
-    add_map_element($map_, (HALLWAY_WIDTH-4)." ".(HALLWAY_LENTGH-1), 'TORCH_1', TORCH_NAME, FOYER_ID,
+    add_map_element($map_, (HALLWAY_WIDTH-4)." ".(HALLWAY_LENTGH-1), 'TORCH_1', TORCH_NAME, HALLWAY_ID,
             '(unquote id-collision)', 'torch-step');
+
     $map = implode("\n", $map_);
     return $map;
 }
