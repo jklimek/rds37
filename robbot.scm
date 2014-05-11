@@ -222,7 +222,6 @@
 
 (define (hero-step self world)
 ; (write *joystick*) (newline)
-  (set! *joy-read?* #t) ;;; bleeeeee!
   ((match *joystick*
      ('0 T:identity)
      ('N (try-walk self 0 -1))
