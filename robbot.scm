@@ -570,6 +570,8 @@
 	     (DOOR_CLOSED_H_R "robbot-art/door_closed_h_r.png")
 	     (DOOR_CLOSED_V_L "robbot-art/door_closed_v_l.png")
 	     (DOOR_CLOSED_V_R "robbot-art/door_closed_v_r.png")
+	     (DOOR_CLOSED_H_L_MINI "robbot-art/door_closed_h_l_mini.png")
+	     (DOOR_CLOSED_H_R_MINI "robbot-art/door_closed_h_r_mini.png")
 	     (DOOR_OPEN_H_L "robbot-art/door_open_h_l.png")
 	     (DOOR_OPEN_H_R "robbot-art/door_open_h_r.png")
 	     (DOOR_OPEN_V_L "robbot-art/door_open_v_l.png")
@@ -743,7 +745,7 @@
 ;;; uh!
 (define (restart-world world)
   `((
-     ,(include "maps/hallway.scm")
+     ,(include "maps/foyer.scm")
      ;; nast sektory...
    )))
 
