@@ -9,8 +9,6 @@
 
 (define *animation-on* #f)
 
-(define *general-game-state* 'PLAY) ;; TITLE HIGHSCORE MESSAGE ANIMATION GAMEOVER ...?
-
 ;;; brudne komunikaty:
 (define (mk-message msgs transform)  
 ;  (write `(mk-msg ,msgs)) (newline)
@@ -542,6 +540,7 @@
 (set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
 
+(define *title-img* (load-image "robbot-art/splash.png"))
 
 (define-macro (mk-sprites l)
   (let loop ((pend (reverse l))
@@ -622,6 +621,8 @@
     *display*)
    (draw-image! (mk-bar-image) 33 460)
 ))
+
+(define display-title (lambda () (draw-image! *title-img* 0 0)))
 
 (define *joystick* 0)
 ;(define *joy-read?* #f)
@@ -724,11 +725,16 @@
 ;; the main loop crap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; uh!
 (define (restart-world world)
   `((
      ,(include "maps/hallway.scm")
+     ;; nast sektory...
    )))
 
+
+
+(define *general-game-state* 'TITLE)
 
 (define *state* (restart-world 'cokolwiek))
 
@@ -737,6 +743,12 @@
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
 ;(write `(back ,*joy-back?* ,*joystick*)) (newline)
 	      (match *general-game-state*
+
+		('TITLE
+		 (set-display-procedure! display-title)
+		 (if (eq? *joystick* 'A) (set! *general-game-state* 'PLAY))
+		 (set! *joystick* 0))
+
 		('PLAY
 		 (let ((old-state *state*))
 		   (set-display-procedure! display-world)
@@ -766,6 +778,7 @@
 		       (begin (set! *state* (transform *state*))
 			      (set! *general-game-state* 'PLAY)))
 		   (set! *joystick* 0)))
+
 		(('ANIMATE old new step)
 		 (let ((max-steps 1.0))
 		   (set-display-procedure! display-world)
