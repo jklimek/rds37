@@ -153,8 +153,8 @@
 	(WINDOW_V_DARK_31:59 1 1 59 0 0 () "a window" ,WINDOW_V_DARK_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WINDOW_V_DARK_31:60 1 1 60 0 0 () "a window" ,WINDOW_V_DARK_3 (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;door out
-	(DOOR_CLOSED_H_L7:1 1 7 1 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) ,(mk-door-collision 2 6 10) (unquote id-action))
-	(DOOR_CLOSED_H_R8:1 1 8 1 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) ,(mk-door-collision 2 6 10) (unquote id-action))
+	(DOOR_CLOSED_H_L7:1 1 7 1 0 0 () "a door" ,DOOR_CLOSED_H_L (unquote id-step) ,(mk-door-collision 2 6 11) (unquote id-action))
+	(DOOR_CLOSED_H_R8:1 1 8 1 0 0 () "a door" ,DOOR_CLOSED_H_R (unquote id-step) ,(mk-door-collision 2 6 11) (unquote id-action))
 	;;door in
 	(DOOR_OPEN_H_L7:64 1 7 64 0 0 () "a door" ,DOOR_OPEN_H_L (unquote id-step) ,(mk-door-collision 0 9 2) (unquote id-action))
 	(DOOR_OPEN_H_R8:64 1 8 64 0 0 () "a door" ,DOOR_OPEN_H_R (unquote id-step) ,(mk-door-collision 0 9 2) (unquote id-action))
