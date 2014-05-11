@@ -253,7 +253,7 @@
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
-		     ,(AL:update 'HEARTRATE (min (+ hero-heartrate hero-floor-shade-effect) 161) hero-state)
+		     ,(AL:update 'HEARTRATE (min (+ hero-heartrate hero-floor-shade-effect) 163) hero-state)
 		     . ,(cdddr (cddddr hero))))
 	 (world ((T:update<o> new-hero) world)))
     (if (< hero-heartrate 1)
@@ -570,6 +570,10 @@
 
 #;(define *samples* (list->array 1 `(,(load-sound "pandora-art/click.wav")
 				   ,(load-sound "pandora-art/beep.wav"))))
+
+(define *music* (load-music "robbot-art/ost.wav"))
+
+(play-music! *music*)
 
 (set-window-title! "YOG-SOTHOT 3000")
 (set-screen-size! 640 480)
