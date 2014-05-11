@@ -355,6 +355,12 @@
 (define id-collision (lambda (x y s) ;(write 'id-col) (newline)
 		       s))
 		   
+(define (mk-door-collision s x y)
+  (lambda (me it world)
+;    (write `(door-col ,it ,s ,x ,y)) (newline)
+    ((T:insert<o> `(,(O:id it) ,s ,x ,y . ,(cddddr it)))
+     ((T:delete<o> it) world))))
+
 (define push-collision
   (lambda (me it world)
 ;    (write `(push-col ,me ,it)) (newline)
@@ -377,6 +383,13 @@
 			       world)))))))
        world))))
 	   
+
+
+(define (mk-portal-collision sec x y)
+  (lambda (me it world)
+    ((T:update<o> `(,(O:id it) ,sec ,x ,y . (cddddr it))) world)))
+
+
 
 (define explode-collision  
   (lambda (me it world)
@@ -743,6 +756,7 @@
 ;;; uh!
 (define (restart-world world)
   `((
+     ,(include "maps/foyer.scm")         
      ,(include "maps/hallway.scm")
      ;; nast sektory...
    )))
@@ -755,8 +769,6 @@
 
 (add-timer! (include "timer.scm")
 	    (lambda()
-;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
-;(write `(back ,*joy-back?* ,*joystick*)) (newline)
 	      (match *general-game-state*
 
 		('TITLE
