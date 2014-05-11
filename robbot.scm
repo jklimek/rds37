@@ -245,11 +245,11 @@
 	 (hero-floor (car (filter (match-lambda ((x y sprite-id) (and (= x hero-x) (= y hero-y))))
 				  (F:tiles cur-floor))))
 	 (hero-floor-shade (caddr hero-floor))
-	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
-					((eq? hero-floor-shade FLOOR_2) -6)
+	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -20)
+					((eq? hero-floor-shade FLOOR_2) -10)
 					((eq? hero-floor-shade FLOOR_3) 2)
-					((eq? hero-floor-shade FLOOR_4) -3)
-					((eq? hero-floor-shade FLOOR_5) -3)))
+					((eq? hero-floor-shade FLOOR_4) -5)
+					((eq? hero-floor-shade FLOOR_5) -5)))
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
