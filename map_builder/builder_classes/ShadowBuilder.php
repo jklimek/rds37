@@ -106,14 +106,32 @@ class ShadowBuilder {
         
     public function build_pillars($version, $distance) {
         $pilars_ = [];
+        
         for ($i = 1; $i < $this->_length-2; $i+=$distance+1) {
-            $pilars_[] = [2, $i, 'val'=>1];
-            $pilars_[] = [3, $i, 'val'=>1];
-            $pilars_[] = [4, $i, 'val'=>2];
-            $pilars_[] = [5, $i, 'val'=>2];
-            $pilars_[] = [2, $i+1, 'val'=>2];
-            $pilars_[] = [3, $i+1, 'val'=>2];
+            $pilars_[] = [2, $i, 'val'=>2];
+            $pilars_[] = [3, $i, 'val'=>2];
+            $pilars_[] = [2, $i+1, 'val'=>1];
+            $pilars_[] = [3, $i+1, 'val'=>1];
+            $pilars_[] = [4, $i+1, 'val'=>2];
+            $pilars_[] = [5, $i+1, 'val'=>2];
+            $pilars_[] = [2, $i+2, 'val'=>2];
+            $pilars_[] = [2, $i+3, 'val'=>2];
         }
+        array_pop($pilars_);
+        array_pop($pilars_);
+//        var_dump($i);
+        $pilars_[] = [2, $this->_length-2, 'val'=>1];
+        $pilars_[] = [3, $this->_length-2, 'val'=>1];
+        $pilars_[] = [4, $this->_length-2, 'val'=>1];
+        $pilars_[] = [5, $this->_length-2, 'val'=>2];
+        $pilars_[] = [6, $this->_length-2, 'val'=>2];
+        $pilars_[] = [2, $this->_length-1, 'val'=>1];
+        $pilars_[] = [3, $this->_length-1, 'val'=>1];
+        $pilars_[] = [4, $this->_length-1, 'val'=>1];
+        $pilars_[] = [5, $this->_length-1, 'val'=>1];
+        $pilars_[] = [6, $this->_length-1, 'val'=>2];
+        $pilars_[] = [7, $this->_length-1, 'val'=>2];
+        
         return $pilars_;
     }
 
