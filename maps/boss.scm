@@ -52,7 +52,7 @@
 	(TORCH_12:2 2 2 2 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
 	(TORCH_211:2 2 11 2 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
 	(TORCH_12:11 2 2 11 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
-	(TORCH_215:11 2 15 11 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action))
+	(TORCH_211:11 2 11 11 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 

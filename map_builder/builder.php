@@ -77,9 +77,9 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     
     add_map_comment($map_, 'door out');
     add_map_element($map_, (HALLWAY_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME, 
-            HALLWAY_ID, ',(mk-door-collision 2 6 10)');
+            HALLWAY_ID, ',(mk-door-collision 2 6 11)');
     add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME,
-            HALLWAY_ID, ',(mk-door-collision 2 6 10)');
+            HALLWAY_ID, ',(mk-door-collision 2 6 11)');
     
     add_map_comment($map_, 'door in');
     add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME,
@@ -274,9 +274,9 @@ function build_boss_room_constructions() {
             '(unquote id-collision)', 'torch-step');
     add_map_element($map_, "2 ".(BOSS_ROOM_LENTGH-1), 'TORCH_1', TORCH_NAME, BOSS_ROOM_ID,
             '(unquote id-collision)', 'torch-step');
-    add_map_element($map_, (FOYER_WIDTH-1)." ".(BOSS_ROOM_LENTGH-1), 'TORCH_2', TORCH_NAME, BOSS_ROOM_ID,
+    add_map_element($map_, (BOSS_ROOM_WIDTH-1)." ".(BOSS_ROOM_LENTGH-1), 'TORCH_2', TORCH_NAME, BOSS_ROOM_ID,
             '(unquote id-collision)', 'torch-step');
-    add_map_element($map_, (FOYER_WIDTH-1)." ".(BOSS_ROOM_LENTGH-1), 'TORCH_2', TORCH_NAME, BOSS_ROOM_ID,
+    add_map_element($map_, (BOSS_ROOM_WIDTH-1)." ".(BOSS_ROOM_LENTGH-1), 'TORCH_2', TORCH_NAME, BOSS_ROOM_ID,
             '(unquote id-collision)', 'torch-step');
     
     $map = implode("\n", $map_);
