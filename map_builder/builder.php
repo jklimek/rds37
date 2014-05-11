@@ -19,7 +19,7 @@ define ('HALLWAY_WIDTH', 14);
 
 define ('UPPER_WALL_TILE_HIGH', 'WALL_U');
 define ('UPPER_WALL_TILE_LOW', 'WALL_L');
-define ('LOWER_WALL_TILE', 'FLOOR_3');
+define ('LOWER_WALL_TILE', 'WALL_LL');
 define ('WALL_NAME', 'a wall');
 define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
 define ('HORIZONTAL_DOOR_TILE_L', 'DOOR_CLOSED_V_R');
