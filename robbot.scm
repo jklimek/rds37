@@ -592,6 +592,7 @@
 
 
 (define *font* (load-font "robbot-art/Minecraftia.ttf" 13))
+(define *font-small* (load-font "robbot-art/Minecraftia.ttf" 9))
 
 (define *display* '()) ;; !!
 (define *heartrate-indicator* 50)
@@ -607,8 +608,10 @@
 	      msgs)))
 
 
+(define *sanity-const* (render-text "Sanity" *font-small*))
+
 (define (mk-bar-image)
-  (rectangle (max 0 (min 600 (to-int (* (+ *heartrate-indicator* (random 4)) 3)))) 8 #xAA0000))
+  (rectangle (max 0 (min 580 (to-int (* (+ *heartrate-indicator* (random 4)) 3)))) 8 #xFFFFFF))
 
 (define display-world
  (lambda()
@@ -624,7 +627,8 @@
 			      (< y1 545))
 			 (draw-image! sprite x y1)))))
     *display*)
-   (draw-image! (mk-bar-image) 33 460)
+   (draw-image! *sanity-const* 10 456)
+   (draw-image! (mk-bar-image) 54 460)
 ))
 
 (define display-title (lambda () (draw-image! *title-img* 0 0)))
@@ -766,8 +770,8 @@
 		       ("GAME OVER" 291 90)
 		       ("As the veil of darkness covers everything," 100 112)
 		       ("you fall into abyss of unspeakable fear and despair..." 100 124)
-		       ("And soon the world will follow." 100 136)
-		       ("PRESS FIRE." 100 166))))
+		       ("And soon the world will follow." 100 148)
+		       ("PRESS FIRE." 285 199))))
 		   (if (eq? *joystick* 'A) (set! *general-game-state* 'TITLE))
 		   (set! *joystick* 0)))
 
