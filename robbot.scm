@@ -367,9 +367,24 @@
 		   
 (define (mk-door-collision s x y)
   (lambda (me it world)
-    (write `(door-col ,it ,s ,x ,y)) (newline)
+;    (write `(door-col ,it ,s ,x ,y)) (newline)
     ((T:insert<o> `(,(O:id it) ,s ,x ,y . ,(cddddr it)))
      ((T:delete<o> it) world))))
+
+(define (mk-locked-door-collision s x y)
+  (lambda (me it world)    
+;    (write `(door-col ,it ,s ,x ,y)) (newline)
+    (let ((carry (AL:lookup 'CARRYING (O:STATE it))))
+      (if (and carry
+	       (eq? (O:id carry) 'KEY1))
+	  ((T:insert<o> `(,(O:id it) ,s ,x ,y . ,(cddddr it)))
+	   ((T:delete<o> it) world))
+	  (begin
+	    (mk-message '(("This door seems to be locked." 180 166)
+			  ("PRESS FIRE." 283 440))
+			T:identity)
+	    world)))))
+
 
 (define push-collision
   (lambda (me it world)
@@ -436,12 +451,7 @@
 		  (cmp (T:update<o> `(,(O:id it)
 				      ,(O:sector it) ,(O:x it) ,(O:y it)
 				      ,(O:dx it) ,(O:dy it)
-				      ,(let* ((niderite (AL:lookup 'NIDERITE (O:STATE it)))
-					      (new-niderite (if niderite
-								(+ niderite 6)
-								6)))
-					; (write `(NIDERYT -- ,new-niderite)) (newline)
-					 (AL:update-insert 'NIDERITE new-niderite (O:STATE it)))
+				      ,(AL:update-insert 'CARRYING me (O:STATE it))
 				      . ,(cdddr (cddddr it))))
 		       (T:delete<o> me)))
       world)))
