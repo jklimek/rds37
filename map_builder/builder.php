@@ -70,17 +70,19 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     return $map;
 }
 
-function build_hallway_floor_sequence($length, $shift_) {
+function build_hallway_floor_sequence($length, $shift_, $thunder = false) {
     $sequence_map_[] = "\n".INDENT."($length (\n".INDENT.INDENT;
-    
+    $light = ($thunder)? '4' : '3';
     for ($i = 2; $i<=HALLWAY_WIDTH-1; $i++) {
         for ($j = 2; $j<=HALLWAY_LENTGH-1; $j++) {
-            add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version());
+            add_floor_element($sequence_map_, "$i $j", eval_floor_tile_version($light));
         }
     }
     $shadow_builder = new ShadowBuilder(HALLWAY_LENTGH, HALLWAY_WIDTH);
     overlay_shadow($sequence_map_, $shadow_builder->build_pillars(1, 3), [0,0]);
-    overlay_shadow($sequence_map_, $shadow_builder->build_cloud_layer(1), $shift_);
+    if (!$thunder) {
+        overlay_shadow($sequence_map_, $shadow_builder->build_cloud_layer(1), $shift_);
+    }
     
     $sequence_map_[] = "\n".INDENT."))\n";
     
@@ -94,12 +96,22 @@ function build_hallway_floor() {
     $map_[] = "\n".INDENT."(";
     
     for ($i=1; $i<=HALLWAY_LENTGH; $i++) {
-        $map_[] = build_hallway_floor_sequence(1, [1, $i]); //1+$i%2
+        $thunder = (in_array($i, [10, 12, 13, 45, 46]))? true : false;
+        $map_[] = build_hallway_floor_sequence(1, [get_horizontal_shift($i), $i] ,$thunder); //1+$i%2
     }
     
     $map_[] = ")\n";
     $map = implode(" ", $map_);
     return $map;
+}
+function get_horizontal_shift($i) {
+//    if ($i%8<4) {
+//        return $i%4;
+//    }
+//    else {
+//        return 3-$i%4;
+//    }
+    return $i%2+1;
 }
 
 function overlay_shadow(&$floor_, $shadow_, $shift_) {
