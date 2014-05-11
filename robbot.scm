@@ -253,7 +253,7 @@
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
-		     ,(AL:update 'HEARTRATE (+ hero-heartrate hero-floor-shade-effect) hero-state)
+		     ,(AL:update 'HEARTRATE (min (+ hero-heartrate hero-floor-shade-effect) 161) hero-state)
 		     . ,(cdddr (cddddr hero))))
 	 (world ((T:update<o> new-hero) world)))
     (if (< hero-heartrate 1)

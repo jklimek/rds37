@@ -1,6 +1,6 @@
 `(0 (
 	;;hero
-	(HERO 0 9 17 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(70 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action))
+	(HERO 0 9 17 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(160 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action))
 	;;foyer upper left wall
 	(WALL_L1:2 0 1 2 0 0 () "a wall" ,WALL_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WALL_L1:3 0 1 3 0 0 () "a wall" ,WALL_L (unquote id-step) (unquote id-collision) (unquote id-action))
