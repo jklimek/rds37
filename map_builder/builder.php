@@ -17,7 +17,8 @@ define ('FOYER_WIDTH', 16);
 define ('HALLWAY_LENTGH', 64);
 define ('HALLWAY_WIDTH', 14);
 
-define ('UPPER_WALL_TILE', 'WALL_U');
+define ('UPPER_WALL_TILE_HIGH', 'WALL_U');
+define ('UPPER_WALL_TILE_LOW', 'WALL_L');
 define ('LOWER_WALL_TILE', 'FLOOR_3');
 define ('WALL_NAME', 'a wall');
 define ('HORIZONTAL_DOOR_TILE_R', 'DOOR_CLOSED_V_R');
@@ -48,7 +49,7 @@ function build_hallway_constructions($window_distance, $window_tiles_) {
     add_map_comment($map_, 'hero');
     add_hero($map_, "8 ".(HALLWAY_LENTGH-1));
     
-    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'hallway');
+    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'hallway', UPPER_WALL_TILE_HIGH);
     
     add_map_comment($map_, 'upper left windows I level');
     for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
@@ -96,7 +97,7 @@ function build_hallway_floor() {
     $map_[] = "\n".INDENT."(";
     
     for ($i=1; $i<=HALLWAY_LENTGH; $i++) {
-        $thunder = (in_array($i, [10, 12, 13, 45, 46]))? true : false;
+        $thunder = (in_array($i, [10, 12, 13, 45, 47]))? true : false;
         $map_[] = build_hallway_floor_sequence(1, [get_horizontal_shift($i), $i] ,$thunder); //1+$i%2
     }
     
@@ -161,7 +162,7 @@ function build_foyer_constructions() {
     add_map_comment($map_, 'hero');
     add_hero($map_, "9 ".(FOYER_LENTGH-1));
     
-    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer');
+    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer', UPPER_WALL_TILE_LOW);
     
     add_map_comment($map_, 'boss door');
     add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME);
@@ -189,12 +190,12 @@ function build_foyer_constructions() {
 }
 
 function add_rectangle_to_map(
-    &$map_, $start_x, $start_y, $width, $length, $name
+    &$map_, $start_x, $start_y, $width, $length, $name, $upper_tile
 ) {
     
     add_map_comment($map_, $name. ' upper left wall');
     for ($i = $start_y; $i<$start_y+$length; $i++) {
-        add_map_element($map_, "$start_x $i", UPPER_WALL_TILE, WALL_NAME);
+        add_map_element($map_, "$start_x $i", $upper_tile, WALL_NAME);
     }
     
     add_map_comment($map_, $name. ' lower right wall');
@@ -204,7 +205,7 @@ function add_rectangle_to_map(
     
     add_map_comment($map_, $name. ' upper right wall');
     for ($i = $start_x; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i $start_y", UPPER_WALL_TILE, WALL_NAME);
+        add_map_element($map_, "$i $start_y", $upper_tile, WALL_NAME);
     }
     
     add_map_comment($map_, $name. ' lower left wall');
