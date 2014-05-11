@@ -778,6 +778,7 @@
      ,(include "maps/foyer.scm")         
      ,(include "maps/hallway.scm")
      ,(include "maps/smallroom.scm")
+     ,(include "maps/boss.scm")
      ;; nast sektory...
    )))
 
