@@ -5,6 +5,9 @@
 	     (slayer font)
 	     (extra common))
 
+
+(define *title-img* (load-image "robbot-art/splash.png")) ;; ?!
+
 (use-modules (ice-9 match)) ;;; tylko dla gejzerka...
 
 (define *animation-on* #f)
@@ -488,10 +491,10 @@
 				  (F:tiles cur-floor))))
 	 (hero-floor-shade (caddr hero-floor))
 	 (hero-floor-shade-effect (cond ((eq? hero-floor-shade FLOOR_1) -6)
-					((eq? hero-floor-shade FLOOR_2) -3)
+					((eq? hero-floor-shade FLOOR_2) -6)
 					((eq? hero-floor-shade FLOOR_3) 2)
-					((eq? hero-floor-shade FLOOR_4) 2)
-					((eq? hero-floor-shade FLOOR_5) 2)))
+					((eq? hero-floor-shade FLOOR_4) -3)
+					((eq? hero-floor-shade FLOOR_5) -3)))
 	 (new-hero `(HERO
 		     ,sector-id ,hero-x ,hero-y
 		     ,(O:dx hero) ,(O:dy hero)
@@ -543,8 +546,6 @@
 
 (set-window-title! "Fear of the dark!")
 (set-screen-size! 640 480)
-
-(define *title-img* (load-image "robbot-art/splash.png"))
 
 (define-macro (mk-sprites l)
   (let loop ((pend (reverse l))
@@ -750,10 +751,11 @@
 
 		('TITLE
 		 (begin
-		   (set! *state* (restart-world 'cokolwiek))
 		   (set-display-procedure! display-title)
-		   (if (eq? *joystick* 'A) (set! *general-game-state* 'PLAY))
-		   (set! *joystick* 0)))
+		   (if (eq? *joystick* 'A)
+		       (begin (set! *general-game-state* 'PLAY)
+			      (set! *state* (restart-world 'cokolwiek)))
+		   (set! *joystick* 0))))
 
 		('GAMEOVER
 		 (begin
