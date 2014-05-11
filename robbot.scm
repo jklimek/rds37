@@ -587,6 +587,7 @@
 	     (TORCH_1 "robbot-art/torch_1.png")
 	     (TORCH_2 "robbot-art/torch_2.png")
 	     (WALL_U "robbot-art/wall_u.png")
+	     (WALL_L "robbot-art/wall_l.png")
 	     (WINDOW_V_DARK_1 "robbot-art/window_v_dark_1.png")
 	     (WINDOW_V_DARK_2 "robbot-art/window_v_dark_2.png")
 	     (WINDOW_V_DARK_3 "robbot-art/window_v_dark_3.png")
@@ -770,12 +771,12 @@
 		   (set-display-procedure!
 		    (mk-display-messages
 		     '(
-		       ("GAME OVER" 290 90)
-		       ("GAME OVER" 291 90)
-		       ("As the veil of darkness covers everything," 100 112)
-		       ("you fall into abyss of unspeakable fear and despair..." 100 124)
-		       ("And soon the world will follow." 100 148)
-		       ("PRESS FIRE." 285 199))))
+		       ("GAME OVER" 290 200)
+		       ("GAME OVER" 291 200)
+		       ("As the veil of darkness covers everything," 100 222)
+		       ("you fall into abyss of unspeakable fear and despair..." 100 234)
+		       ("And soon the world will follow." 100 258)
+		       ("PRESS FIRE." 285 410))))
 		   (if (eq? *joystick* 'A) (set! *general-game-state* 'TITLE))
 		   (set! *joystick* 0)))
 
