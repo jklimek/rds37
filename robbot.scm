@@ -773,7 +773,8 @@
 (define (restart-world world)
   `((
      ,(include "maps/foyer.scm")         
-     ,(include "maps/hallway.scm")
+     ,(include "maps/hallway.scm")       
+     ,(include "maps/boss.scm")
      ;; nast sektory...
    )))
 

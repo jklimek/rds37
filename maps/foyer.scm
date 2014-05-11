@@ -1,6 +1,6 @@
 `(0 (
 	;;hero
-	(HERO 0 9 17 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(160 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action))
+	(HERO 0 9 17 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(70 0))) "the hero" ,LUDEK_H_B (unquote hero-step) (unquote id-collision) (unquote hero-action))
 	;;foyer upper left wall
 	(WALL_L1:2 0 1 2 0 0 () "a wall" ,WALL_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	(WALL_L1:3 0 1 3 0 0 () "a wall" ,WALL_L (unquote id-step) (unquote id-collision) (unquote id-action))
@@ -73,10 +73,10 @@
 	(DOOR_CLOSED_V_R1:9 0 1 9 0 0 () "a door" ,DOOR_CLOSED_V_R (unquote id-step) (unquote id-collision) (unquote id-action))
 	(DOOR_CLOSED_V_L1:10 0 1 10 0 0 () "a door" ,DOOR_CLOSED_V_L (unquote id-step) (unquote id-collision) (unquote id-action))
 	;;TORCHES
-	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action)) 
-	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote id-step) (unquote id-collision) (unquote id-action))
-	(TORCH_215:17 0 15 17 0 0 () "a torch" ,TORCH_2 (unquote id-step) (unquote id-collision) (unquote id-action))
+	(TORCH_12:2 0 2 2 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_215:2 0 15 2 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action)) 
+	(TORCH_12:17 0 2 17 0 0 () "a torch" ,TORCH_1 (unquote torch-step) (unquote id-collision) (unquote id-action))
+	(TORCH_215:17 0 15 17 0 0 () "a torch" ,TORCH_2 (unquote torch-step) (unquote id-collision) (unquote id-action))
 	)
 
  	;;regular floor 
