@@ -584,6 +584,7 @@
 	     (TORCH_2 "robbot-art/torch_2.png")
 	     (WALL_U "robbot-art/wall_u.png")
 	     (WALL_L "robbot-art/wall_l.png")
+	     (WALL_LL "robbot-art/wall_ll.png")
 	     (WINDOW_V_DARK_1 "robbot-art/window_v_dark_1.png")
 	     (WINDOW_V_DARK_2 "robbot-art/window_v_dark_2.png")
 	     (WINDOW_V_DARK_3 "robbot-art/window_v_dark_3.png")
