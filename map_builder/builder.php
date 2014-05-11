@@ -27,13 +27,16 @@ define ('DOOR_NAME', 'a door');
 define ('WINDOW_TILE', 'WINDOW_V_DARK_3');
 define ('WINDOW_NAME', 'a window');
 
+define('FOYER_ID', '0');
+define('HALLWAY_ID', '1');
+
 define('HERO_TILE', 'LUDEK_H_B');
 
 build_foyer();
 build_hallway();
 
 function build_hallway() {
-    $map = "`(0 (\n";
+    $map = "`(".HALLWAY_ID." (\n";
     $map .= build_hallway_constructions(2, ['Uwindow', 'Uwindow']);
     $map .= "\n".INDENT.")\n";
     $map .= build_hallway_floor();
@@ -46,26 +49,27 @@ function build_hallway() {
 function build_hallway_constructions($window_distance, $window_tiles_) {
     $map_ = [];
     
-    add_map_comment($map_, 'hero');
-    add_hero($map_, "8 ".(HALLWAY_LENTGH-1));
+//    add_map_comment($map_, 'hero');
+//    add_hero($map_, "8 ".(HALLWAY_LENTGH-1), HALLWAY_ID);
     
-    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'hallway', UPPER_WALL_TILE_HIGH);
+    add_rectangle_to_map($map_, 1, 1, HALLWAY_WIDTH, HALLWAY_LENTGH, 'hallway',
+            UPPER_WALL_TILE_HIGH, HALLWAY_ID);
     
     add_map_comment($map_, 'upper left windows I level');
     for ($i = 3; $i<=HALLWAY_LENTGH-2; $i+=$window_distance) {
         foreach ($window_tiles_ as $key=>$tile_name) {
-            add_map_element($map_, "1 ".($i+$key), WINDOW_TILE, WINDOW_NAME);
+            add_map_element($map_, "1 ".($i+$key), WINDOW_TILE, WINDOW_NAME, HALLWAY_ID);
         }
         $i += count($window_tiles_); 
     }
     
     add_map_comment($map_, 'door out');
-    add_map_element($map_, (HALLWAY_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME);
-    add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME, HALLWAY_ID);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME, HALLWAY_ID);
     
     add_map_comment($map_, 'door in');
-    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME);
-    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME);
+    add_map_element($map_, (HALLWAY_WIDTH/2)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, HALLWAY_ID);
+    add_map_element($map_, (HALLWAY_WIDTH/2+1)." ".HALLWAY_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME, HALLWAY_ID);
     
     $map = implode("\n", $map_);
     return $map;
@@ -126,7 +130,7 @@ function overlay_shadow(&$floor_, $shadow_, $shift_) {
 }
 
 function build_foyer() {
-    $map = "`(0 (\n";
+    $map = "`(".FOYER_ID." (\n";
     $map .= build_foyer_constructions();
     $map .= "\n".INDENT.")\n";
     $map .= build_foyer_floor();
@@ -160,17 +164,18 @@ function build_foyer_constructions() {
     $map_ = [];
     
     add_map_comment($map_, 'hero');
-    add_hero($map_, "9 ".(FOYER_LENTGH-1));
+    add_hero($map_, "9 ".(FOYER_LENTGH-1), FOYER_ID);
     
-    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer', UPPER_WALL_TILE_LOW);
+    add_rectangle_to_map($map_, 1, 1, FOYER_WIDTH, FOYER_LENTGH, 'foyer', 
+        UPPER_WALL_TILE_LOW, FOYER_ID);
     
     add_map_comment($map_, 'boss door');
-    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2)." 1", 'DOOR_CLOSED_H_L', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." 1", 'DOOR_CLOSED_H_R', DOOR_NAME, FOYER_ID);
     
     add_map_comment($map_, 'front door');
-    add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME);
-    add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME);
+    add_map_element($map_, (FOYER_WIDTH/2)." ".FOYER_LENTGH, 'DOOR_OPEN_H_L', DOOR_NAME, FOYER_ID);
+    add_map_element($map_, (FOYER_WIDTH/2+1)." ".FOYER_LENTGH, 'DOOR_OPEN_H_R', DOOR_NAME, FOYER_ID);
     
 //    add_map_comment($map_, 'stairs');
 //    for ($i=2; $i<=3; $i++) {
@@ -190,32 +195,32 @@ function build_foyer_constructions() {
 }
 
 function add_rectangle_to_map(
-    &$map_, $start_x, $start_y, $width, $length, $name, $upper_tile
+    &$map_, $start_x, $start_y, $width, $length, $name, $upper_tile, $location_id
 ) {
     
     add_map_comment($map_, $name. ' upper left wall');
     for ($i = $start_y; $i<$start_y+$length; $i++) {
-        add_map_element($map_, "$start_x $i", $upper_tile, WALL_NAME);
+        add_map_element($map_, "$start_x $i", $upper_tile, WALL_NAME, $location_id);
     }
     
     add_map_comment($map_, $name. ' lower right wall');
     for ($i = $start_y+1; $i<$start_y+$length; $i++) {
-        add_map_element($map_, ($start_x + $width - 1)." $i", LOWER_WALL_TILE, WALL_NAME);
+        add_map_element($map_, ($start_x + $width - 1)." $i", LOWER_WALL_TILE, WALL_NAME, $location_id);
     }
     
     add_map_comment($map_, $name. ' upper right wall');
     for ($i = $start_x; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i $start_y", $upper_tile, WALL_NAME);
+        add_map_element($map_, "$i $start_y", $upper_tile, WALL_NAME, $location_id);
     }
     
     add_map_comment($map_, $name. ' lower left wall');
     for ($i = $start_x+1; $i<$start_x+$width; $i++) {
-        add_map_element($map_, "$i ".($start_y + $length - 1), LOWER_WALL_TILE, WALL_NAME);
+        add_map_element($map_, "$i ".($start_y + $length - 1), LOWER_WALL_TILE, WALL_NAME, $location_id);
     }
 }
 
-function add_hero(&$map_, $coordinates) {   
-    $map_[] = INDENT."(HERO 0 "
+function add_hero(&$map_, $coordinates, $location_id) {   
+    $map_[] = INDENT."(HERO $location_id "
         . $coordinates
         . " 0 0 (unquote (AL:new '(HEARTRATE NIDERITE) '(70 0))) \"the hero\" ,"
             .HERO_TILE. " (unquote hero-step) (unquote id-collision) (unquote hero-action))";
@@ -242,14 +247,14 @@ function add_floor_element(&$map_, $coordinates, $floor_type) {
     $map_[$coordinates] = "($coordinates ,$floor_type)";
 }
 
-function add_map_element(&$map_, $coordinates, $file_name, $object_type) {
+function add_map_element(&$map_, $coordinates, $file_name, $object_type, $location_id) {
     if (LOUD) {
         echo($coordinates.NL);
     }
     unset($map_[$coordinates]);
     $map_[$coordinates] = preg_replace(
         '#([0-9]+) ([0-9]+)#',
-        INDENT.'('.$file_name.'\1:\2 0 \1 \2 0 0 () "'.$object_type
+        INDENT.'('.$file_name.'\1:\2 '.$location_id.' \1 \2 0 0 () "'.$object_type
             .'" ,'.$file_name.' (unquote id-step) (unquote id-collision) (unquote id-action))',
         $coordinates
     );
