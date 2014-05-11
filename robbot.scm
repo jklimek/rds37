@@ -624,19 +624,20 @@
 ))
 
 (define *joystick* 0)
-(define *joy-read?* #f)
+;(define *joy-read?* #f)
+(define *joy-back?* #f)
 
-(keydn 'space (lambda () (set! *joystick* 'A) (set! *joy-read?* #f)))
-(keydn 'up    (lambda () (set! *joystick* 'N) (set! *joy-read?* #f)))
-(keydn 'right (lambda () (set! *joystick* 'E) (set! *joy-read?* #f)))
-(keydn 'left  (lambda () (set! *joystick* 'W) (set! *joy-read?* #f)))
-(keydn 'down  (lambda () (set! *joystick* 'S) (set! *joy-read?* #f)))
+(keydn 'space (lambda () (begin (set! *joystick* 'A) (set! *joy-back?* #f))))
+(keydn 'up    (lambda () (begin (set! *joystick* 'N) (set! *joy-back?* #f))))
+(keydn 'right (lambda () (begin (set! *joystick* 'E) (set! *joy-back?* #f))))
+(keydn 'left  (lambda () (begin (set! *joystick* 'W) (set! *joy-back?* #f))))
+(keydn 'down  (lambda () (begin (set! *joystick* 'S) (set! *joy-back?* #f))))
 
-(keyup 'up    (lambda () (if *joy-read?* (set! *joystick* 0))))
-(keyup 'down  (lambda () (if *joy-read?* (set! *joystick* 0))))
-(keyup 'right (lambda () (if *joy-read?* (set! *joystick* 0))))
-(keyup 'left  (lambda () (if *joy-read?* (set! *joystick* 0))))
-(keyup 'space (lambda () (if *joy-read?* (set! *joystick* 0))))
+(keyup 'up    (lambda () (if (eq? *joystick* 'N) (set! *joy-back?* #t))))
+(keyup 'right (lambda () (if (eq? *joystick* 'E) (set! *joy-back?* #t))))
+(keyup 'left  (lambda () (if (eq? *joystick* 'W) (set! *joy-back?* #t))))
+(keyup 'down  (lambda () (if (eq? *joystick* 'S) (set! *joy-back?* #t))))
+;(keyup 'space (lambda () (set! *joy-back?* #t)))
 
 (keydn 'esc quit)
 (keydn 'q quit)
@@ -734,6 +735,7 @@
 (add-timer! (include "timer.scm")
 	    (lambda()
 ;	      (write (if (pair? *general-game-state*) (car *general-game-state*) *general-game-state*)) (newline)
+;(write `(back ,*joy-back?* ,*joystick*)) (newline)
 	      (match *general-game-state*
 		('PLAY
 		 (let ((old-state *state*))
@@ -741,13 +743,15 @@
 		   (set! *state* (std-step *state*))
 		   (set-to-display! (current-view *state*))
 
+		   (if (or *joy-back?* (eq? *joystick* 'A)) (set! *joystick* 0))
+		   (set! *joy-back?* #f)
+;		   (set! *joy-read?* #t) ;;; bleeeeee!
+
 		   (if (not (find 'HERO *state*))		       
 		       (mk-message '(("YOU HAVE BEEN KILLED." 180 166)
 				     ("PRESS FIRE." 180 196))
 				   restart-world
 				   #;(T:insert<o> `(HERO 0 3 3 0 0 () "the hero" ,hero-step ,id-collision ,hero-action))))
-
-		   (if (eq? *joystick* 'A) (set! *joystick* 0))
 
 		   (if (and *animation-on* (eq? *general-game-state* 'PLAY))
 		       (set! *general-game-state* `(ANIMATE ,old-state ,*state* 1)))
