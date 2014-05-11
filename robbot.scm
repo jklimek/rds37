@@ -766,12 +766,12 @@
 		   (set-display-procedure!
 		    (mk-display-messages
 		     '(
-		       ("GAME OVER" 290 90)
-		       ("GAME OVER" 291 90)
-		       ("As the veil of darkness covers everything," 100 112)
-		       ("you fall into abyss of unspeakable fear and despair..." 100 124)
-		       ("And soon the world will follow." 100 148)
-		       ("PRESS FIRE." 285 199))))
+		       ("GAME OVER" 290 200)
+		       ("GAME OVER" 291 200)
+		       ("As the veil of darkness covers everything," 100 222)
+		       ("you fall into abyss of unspeakable fear and despair..." 100 234)
+		       ("And soon the world will follow." 100 258)
+		       ("PRESS FIRE." 285 410))))
 		   (if (eq? *joystick* 'A) (set! *general-game-state* 'TITLE))
 		   (set! *joystick* 0)))
 
