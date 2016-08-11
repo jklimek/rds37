@@ -1,5 +1,5 @@
 TODO:
-- rozkurwić
+- zniszczyc
 
 -----------
 
